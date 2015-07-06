@@ -25,16 +25,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -67,7 +74,7 @@ public class ResultsFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
             FetchResultsTask fetchResultsTask = new FetchResultsTask();
-            fetchResultsTask.execute("31.549721", "74.343613");
+            fetchResultsTask.execute("31.549721", "74.343613", "2015-07-06");
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -133,15 +140,25 @@ public class ResultsFragment extends Fragment {
         }
 
         /**
-         * Prepare the weather high/lows for presentation.
+         * Prepare the attributes max and min temperature for presentation.
          */
-        private String formatHighLows(double high, double low) {
+        private String formatMaxMin(double max, double min) {
             // For presentation, assume the user doesn't care about tenths of a degree.
-            long roundedHigh = Math.round(high);
-            long roundedLow = Math.round(low);
+            long roundedHigh = Math.round(max);
+            long roundedLow = Math.round(min);
 
-            String highLowStr = roundedHigh + "/" + roundedLow;
+            String highLowStr = roundedHigh + "/" + roundedLow + "°C";
             return highLowStr;
+        }
+
+        /**
+         * Prepare the attribute precip for presentation.
+         */
+        private String formatPrecip(double precip) {
+            long roundedPrecip = Math.round(precip);
+
+            String finalPrecip = roundedPrecip + "mm";
+            return finalPrecip;
         }
 
         /**
@@ -151,66 +168,172 @@ public class ResultsFragment extends Fragment {
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
-        private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
+        private String[] getWeatherDataFromJson(String resultJsonStr)
                 throws JSONException {
 
             // These are the names of the JSON objects that need to be extracted.
-            final String OWM_LIST = "list";
-            final String OWM_WEATHER = "weather";
-            final String OWM_TEMPERATURE = "temp";
-            final String OWM_MAX = "max";
-            final String OWM_MIN = "min";
-            final String OWM_DATETIME = "dt";
-            final String OWM_DESCRIPTION = "main";
+            final String DAILY_ATTRIBUTES = "dailyAttributes";
+            final String MAX_TEMPERATURE = "maxTemperature";
+            final String MIN_TEMPERATURE = "minTemperature";
+            final String PRECIP = "precip";
+            final String DATE = "date";
 
-            JSONObject forecastJson = new JSONObject(forecastJsonStr);
-            JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
+            JSONArray resultsArray = new JSONArray(resultJsonStr);
 
-            String[] resultStrs = new String[numDays];
-            for(int i = 0; i < weatherArray.length(); i++) {
-                // For now, using the format "Day, description, hi/low"
-                String day;
-                String description;
-                String highAndLow;
+            String[] resultStrs = new String[resultsArray.length()];
+            for (int i = 0; i < resultsArray.length(); i++) {
+                String maxAndMin = "";
+                String precipitation = "";
+                String date = "";
+                Double maxTemperature = Double.NaN;
+                Double minTemperature = Double.NaN;;
+                Double precip = Double.NaN;
 
                 // Get the JSON object representing the day
-                JSONObject dayForecast = weatherArray.getJSONObject(i);
+                JSONObject result = resultsArray.getJSONObject(i);
 
-                // The date/time is returned as a long.  We need to convert that
-                // into something human-readable, since most people won't read "1400356800" as
-                // "this saturday".
-                long dateTime = dayForecast.getLong(OWM_DATETIME);
-                day = getReadableDateString(dateTime);
+                if (result.has(DAILY_ATTRIBUTES)) {
+                    JSONObject dailyAttributes = result.getJSONObject(DAILY_ATTRIBUTES);
 
-                // description is in a child array called "weather", which is 1 element long.
-                JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
-                description = weatherObject.getString(OWM_DESCRIPTION);
+                    if (dailyAttributes.getString(MAX_TEMPERATURE) != "null")
+                        maxTemperature = dailyAttributes.getDouble(MAX_TEMPERATURE);
 
-                // Temperatures are in a child object called "temp".  Try not to name variables
-                // "temp" when working with temperature.  It confuses everybody.
-                JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
-                double high = temperatureObject.getDouble(OWM_MAX);
-                double low = temperatureObject.getDouble(OWM_MIN);
+                    if (dailyAttributes.getString(MIN_TEMPERATURE) != "null")
+                        minTemperature = dailyAttributes.getDouble(MIN_TEMPERATURE);
 
-                highAndLow = formatHighLows(high, low);
-                resultStrs[i] = day + " - " + description + " - " + highAndLow;
+                    if (dailyAttributes.getString(PRECIP) != "null")
+                        precip = dailyAttributes.getDouble(PRECIP);
+
+                    maxAndMin = formatMaxMin(maxTemperature, minTemperature);
+                    precipitation = formatPrecip(precip);
+                } else {
+                    String errorMessage = "Incomplete information received!";
+                    resultStrs[i] = errorMessage;
+                    Log.e(LOG_TAG, errorMessage);
+                }
+
+                if (result.getString(DATE) != "null")
+                    date = result.getString(DATE);
+
+                resultStrs[i] = date + " - " + precipitation + " - " + maxAndMin;
+                Log.v(LOG_TAG, "Data we got is" + resultsArray.getJSONObject(i));
             }
 
-            for (String s : resultStrs) {
-                Log.v(LOG_TAG, "Forecast entry: " + s);
-            }
             return resultStrs;
 
         }
 
-        @Override
-        protected String[] doInBackground(String... params) {
+        private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+            for(Map.Entry<String, String> entry : params.entrySet()){
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
 
-            // If there's no zip code, there's nothing to look up.  Verify size of params.
-            if (params.length == 0) {
-                return null;
+                result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
             }
 
+            return result.toString();
+        }
+
+        private String getOAuthToken() {
+            // These two need to be declared outside the try/catch
+            // so that they can be closed in the finally block.
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+
+            // Will contain the raw JSON response as a string.
+            String oauthTokenJsonStr = null;
+
+            try {
+                // Construct the URL for the API query
+                Uri builtUri = Uri.parse(Constants.OAUTH_API_BASE_URL).buildUpon()
+                        .build();
+
+                URL url = new URL(builtUri.toString());
+
+                Log.v(LOG_TAG, "Built URI " + builtUri.toString());
+
+                // Create hashmap of post parameters
+                HashMap<String, String> postDataParams = new HashMap<>();
+                postDataParams.put(Constants.OAUTH_GRANT_TYPE, Constants.OAUTH_CLIENT_CREDENTIALS);
+
+                // Create the request to the server and open the connection
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setReadTimeout(15000);
+                urlConnection.setConnectTimeout(15000);
+                urlConnection.setRequestProperty("Authorization", "Basic " + Constants.BASE64_ENCODED_CREDENTIAL);
+                urlConnection.setRequestProperty("Content-Type", Constants.OAUTH_HEADER_CONTENT_TYPE);
+
+                OutputStream os = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(getPostDataString(postDataParams));
+
+                writer.flush();
+                writer.close();
+                os.close();
+
+                urlConnection.connect();
+
+                // Read the input stream into a String
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a LOT easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return null;
+                }
+                oauthTokenJsonStr = buffer.toString();
+                Log.v(LOG_TAG, "OAauth response from server " + oauthTokenJsonStr);
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error ", e);
+                // If the code didn't successfully get the weather data, there's no point in attempting
+                // to parse it.
+                return null;
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e(LOG_TAG, "Error closing stream", e);
+                    }
+                }
+            }
+
+            try {
+                JSONObject tokenObject = new JSONObject(oauthTokenJsonStr);
+                return tokenObject.getString("access_token");
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+                e.printStackTrace();
+            }
+            // This will only happen if there was an error getting or parsing the OAuth token.
+            return null;
+        }
+
+        private String[] getDataFromAPI(String latitude, String longitude, String date, String token) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -219,26 +342,18 @@ public class ResultsFragment extends Fragment {
             // Will contain the raw JSON response as a string.
             String forecastJsonStr = null;
 
-            String format = "json";
-            String units = "metric";
-            int numDays = 7;
-
             try {
                 // Construct the URL for the API query
                 final String FORECAST_BASE_URL =
-                        "http://api.openweathermap.org/data/2.5/forecast/daily?";
-                final String LATITUDE = "lat";
-                final String LONGITUDE = "lon";
-                final String FORMAT_PARAM = "mode";
-                final String UNITS_PARAM = "units";
-                final String DAYS_PARAM = "cnt";
+                        "https://api.awhere.com/v1/weather";
+                final String LATITUDE = "latitude";
+                final String LONGITUDE = "longitude";
+                final String START_DATE = "startDate";
 
                 Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                        .appendQueryParameter(LATITUDE, params[0])
-                        .appendQueryParameter(LONGITUDE, params[1])
-                        .appendQueryParameter(FORMAT_PARAM, format)
-                        .appendQueryParameter(UNITS_PARAM, units)
-                        .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                        .appendQueryParameter(LATITUDE, latitude)
+                        .appendQueryParameter(LONGITUDE, longitude)
+                        .appendQueryParameter(START_DATE, "2015-07-06")
                         .build();
 
                 URL url = new URL(builtUri.toString());
@@ -248,6 +363,7 @@ public class ResultsFragment extends Fragment {
                 // Create the request to the server and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
+                urlConnection.setRequestProperty("Authorization", "Bearer " + token);
                 urlConnection.connect();
 
                 // Read the input stream into a String
@@ -292,13 +408,28 @@ public class ResultsFragment extends Fragment {
             }
 
             try {
-                return getWeatherDataFromJson(forecastJsonStr, numDays);
+                return getWeatherDataFromJson(forecastJsonStr);
             } catch (JSONException e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();
             }
             // This will only happen if there was an error getting or parsing the forecast.
             return null;
+        }
+
+        @Override
+        protected String[] doInBackground(String... params) {
+
+            // If there's no zip code, there's nothing to look up.  Verify size of params.
+            if (params.length == 0) {
+                return null;
+            }
+
+            String token = getOAuthToken();
+            if (token == null)
+                return null;
+            else
+                return getDataFromAPI(params[0], params[1], params[2], token);
         }
 
         @Override
