@@ -49,6 +49,7 @@ import java.util.Map;
 public class ResultsFragment extends Fragment {
 
     private ArrayAdapter<String> resultsAdapter;
+    private static String OAuthToken = null;
 
     public ResultsFragment() {
     }
@@ -216,7 +217,6 @@ public class ResultsFragment extends Fragment {
                     date = result.getString(DATE);
 
                 resultStrs[i] = date + " - " + precipitation + " - " + maxAndMin;
-                Log.v(LOG_TAG, "Data we got is" + resultsArray.getJSONObject(i));
             }
 
             return resultStrs;
@@ -366,6 +366,9 @@ public class ResultsFragment extends Fragment {
                 urlConnection.setRequestProperty("Authorization", "Bearer " + token);
                 urlConnection.connect();
 
+                int responseCode = urlConnection.getResponseCode();
+                Log.v(LOG_TAG, "Respond Code is " + responseCode);
+
                 // Read the input stream into a String
                 InputStream inputStream = urlConnection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
@@ -388,7 +391,7 @@ public class ResultsFragment extends Fragment {
                     return null;
                 }
                 forecastJsonStr = buffer.toString();
-                Log.v(LOG_TAG, "Response from server: " + forecastJsonStr);
+                Log.v(LOG_TAG, "Response from server received!");
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attempting
@@ -425,11 +428,23 @@ public class ResultsFragment extends Fragment {
                 return null;
             }
 
-            String token = getOAuthToken();
-            if (token == null)
-                return null;
-            else
-                return getDataFromAPI(params[0], params[1], params[2], token);
+            if (OAuthToken == null) {
+                OAuthToken = getOAuthToken();
+                Log.v(LOG_TAG, "No existing token was present, new token is = " + OAuthToken);
+            }
+
+            String[] results = getDataFromAPI(params[0], params[1], params[2], OAuthToken);
+
+            if (results == null) {
+                // When the token has expired and we get exception from getDataFromAPI method
+                OAuthToken = getOAuthToken();
+                Log.v(LOG_TAG, "Token has expired, new token is = " + OAuthToken);
+                results = getDataFromAPI(params[0], params[1], params[2], OAuthToken);
+            } else {
+                Log.v(LOG_TAG, "Using same token = " + OAuthToken);
+            }
+
+            return results;
         }
 
         @Override
