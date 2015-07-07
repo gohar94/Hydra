@@ -4,9 +4,12 @@ package com.example.gohar.hydra;
  * Created by Gohar on 03/07/15.
  */
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +39,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +50,8 @@ import java.util.Map;
 public class ResultsFragment extends Fragment {
 
     private ArrayAdapter<String> resultsAdapter;
-    private static String OAuthToken = null;
+    private static String oauthToken = null;
+    private final String LOG_TAG = ResultsFragment.class.getSimpleName();
 
     public ResultsFragment() {
     }
@@ -67,6 +69,23 @@ public class ResultsFragment extends Fragment {
         inflater.inflate(R.menu.resultsfragment, menu);
     }
 
+    public void updateResults() {
+        FetchResultsTask fetchResultsTask = new FetchResultsTask();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String latitude = prefs.getString(getString(R.string.pref_location_latitude_key),
+                getString(R.string.pref_location_latitude_default));
+        String longitude = prefs.getString(getString(R.string.pref_location_longitude_key),
+                getString(R.string.pref_location_longitude_default));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = sdf.format(new Date());
+
+        Log.v(LOG_TAG, "Fetching data for date = " + currentDate);
+
+        fetchResultsTask.execute(latitude, longitude, currentDate);
+        return;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -74,11 +93,16 @@ public class ResultsFragment extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            FetchResultsTask fetchResultsTask = new FetchResultsTask();
-            fetchResultsTask.execute("31.549721", "74.343613", "2015-07-06");
+            updateResults();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateResults();
     }
 
     @Override
@@ -86,19 +110,8 @@ public class ResultsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // Array of data to display on the list
-        String[] resultsArray = {
-                "Today - Sunny",
-                "Tomorrow - Cloudy",
-                "Wed - Windy",
-                "Thur - Sunny",
-                "Fri - Rainy",
-                "Sat - Rainy",
-                "Sun - Overcast"
-        };
-
         // ArrayList of data to display on the list
-        List<String> results = new ArrayList<String>(Arrays.asList(resultsArray));
+        List<String> results = new ArrayList<String>();
 
         // Adapter of data to display on the list
         resultsAdapter = new ArrayAdapter<String>(
@@ -119,7 +132,9 @@ public class ResultsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String result = resultsAdapter.getItem(position);
-                Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), DetailActivity.class).
+                        putExtra(Intent.EXTRA_TEXT, result);
+                startActivity(intent);
             }
         });
 
@@ -369,6 +384,12 @@ public class ResultsFragment extends Fragment {
                 int responseCode = urlConnection.getResponseCode();
                 Log.v(LOG_TAG, "Respond Code is " + responseCode);
 
+                if (responseCode == 401) {
+                    // Authorization token invalid
+                    String[] results = {"401"};
+                    return results;
+                }
+
                 // Read the input stream into a String
                 InputStream inputStream = urlConnection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
@@ -428,20 +449,29 @@ public class ResultsFragment extends Fragment {
                 return null;
             }
 
-            if (OAuthToken == null) {
-                OAuthToken = getOAuthToken();
-                Log.v(LOG_TAG, "No existing token was present, new token is = " + OAuthToken);
+            if (oauthToken == null) {
+                oauthToken = getOAuthToken();
+
+                if (oauthToken == null) {
+                    // Could not obtain oauth token
+                    Log.e(LOG_TAG, "Could not obtain token");
+                    return null;
+                }
+
+                Log.v(LOG_TAG, "No existing token was present, new token is = " + oauthToken);
             }
 
-            String[] results = getDataFromAPI(params[0], params[1], params[2], OAuthToken);
+            String[] results = getDataFromAPI(params[0], params[1], params[2], oauthToken);
 
             if (results == null) {
+                return null;
+            } else if (results[0] == "401") {
                 // When the token has expired and we get exception from getDataFromAPI method
-                OAuthToken = getOAuthToken();
-                Log.v(LOG_TAG, "Token has expired, new token is = " + OAuthToken);
-                results = getDataFromAPI(params[0], params[1], params[2], OAuthToken);
+                oauthToken = getOAuthToken();
+                Log.v(LOG_TAG, "Token has expired, new token is = " + oauthToken);
+                results = getDataFromAPI(params[0], params[1], params[2], oauthToken);
             } else {
-                Log.v(LOG_TAG, "Using same token = " + OAuthToken);
+                Log.v(LOG_TAG, "Using same token = " + oauthToken);
             }
 
             return results;

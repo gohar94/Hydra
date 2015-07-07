@@ -1,6 +1,26 @@
 <resources>
-    <string name="app_name">Hydra</string>
+    <string name="app_name" translatable="false">Hydra</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_refresh" translatable="false">Refresh</string>
+    <string name="title_activity_detail">Detail</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Label for latitude of location preference [CHAR LIMIT = 30] -->
+    <string name="pref_location_latitude_label">Latitude</string>
+
+    <!-- Label for longitude of location preference [CHAR LIMIT = 30] -->
+    <string name="pref_location_longitude_label">Longitude</string>
+
+    <!-- Key name for storing latitude of location in shared preference [CHAR LIMIT = NONE] -->
+    <string name="pref_location_latitude_key">latitude</string>
+
+    <!-- Key name for storing longitude of location in shared preference [CHAR LIMIT = NONE] -->
+    <string name="pref_location_longitude_key">longitude</string>
+
+    <!-- Default value for latitude of location preference [CHAR LIMIT = NONE] -->
+    <string name="pref_location_latitude_default" translatable="false">31.549721</string>
+
+    <!-- Default value for longitude of location preference [CHAR LIMIT = NONE] -->
+    <string name="pref_location_longitude_default" translatable="false">74.343613</string>
 </resources>
