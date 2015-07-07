@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
 public class SettingsActivity extends PreferenceActivity
@@ -13,14 +12,14 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
+        addPreferencesFromResource(R.xml.pref_general);
 
 
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
         // TODO: Add preference
-//        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_latitude_key)));
-//        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_longitude_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_latitude_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_longitude_key)));
     }
 
     /**
@@ -57,15 +56,5 @@ public class SettingsActivity extends PreferenceActivity
             preference.setSummary(stringValue);
         }
         return true;
-    }
-
-    public static class SettingsFragment extends PreferenceFragment
-    {
-        @Override
-        public void onCreate(final Bundle savedInstanceState)
-        {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_general);
-        }
     }
 }
