@@ -69,7 +69,7 @@ public class OptionsActivity extends ActionBarActivity {
             @Override
             public void onClick(View arg0) {
                 // \n is for new line
-                Toast.makeText(getApplicationContext(), "Open Maps clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Long Press to select a location on the map!", Toast.LENGTH_SHORT).show();
                 Intent i=new Intent(getBaseContext(), MapsActivity.class);
                 startActivity(i);
             }
