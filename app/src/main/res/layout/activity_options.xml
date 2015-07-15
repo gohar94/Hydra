@@ -13,8 +13,7 @@
     <ImageView
         android:layout_width="350dp"
         android:layout_height="200dp"
-        android:id="@+id/imageView"
-        android:src="@mipmap/ic_launcher"
+        android:id="@+id/imageViewHydraLogo"
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/btnShowLocation"
         android:layout_alignStart="@+id/btnShowLocation"

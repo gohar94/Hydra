@@ -368,7 +368,7 @@ public class ResultsFragment extends Fragment {
                 Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                         .appendQueryParameter(LATITUDE, latitude)
                         .appendQueryParameter(LONGITUDE, longitude)
-                        .appendQueryParameter(START_DATE, "2015-07-06")
+                        .appendQueryParameter(START_DATE, date)
                         .build();
 
                 URL url = new URL(builtUri.toString());

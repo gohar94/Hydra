@@ -2,9 +2,9 @@ package com.example.gohar.hydra;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 
 public class OptionsActivity extends ActionBarActivity {
+
     Button btnShowLocation;
     Button btnOpenMaps;
 
@@ -41,15 +42,12 @@ public class OptionsActivity extends ActionBarActivity {
                     double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
 
-
                     SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(OptionsActivity.this);
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString("latitude", Double.toString(latitude));
                     editor.putString("longitude", String.valueOf(longitude));
                     editor.apply();
 
-
-                    // \n is for new line
                     Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
                     Intent i=new Intent(getBaseContext(), MainActivity.class);
                     startActivity(i);
