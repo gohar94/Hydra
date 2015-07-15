@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.gohar.hydra.OptionsActivity"
+    android:id="@+id/options"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:background="#487385">
+
+    <ImageView
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:id="@+id/imageView"
+        android:src="@mipmap/ic_launcher"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/btnShowLocation"
+        android:layout_alignStart="@+id/btnShowLocation"
+        android:layout_alignRight="@+id/btnOpenMaps"
+        android:layout_alignEnd="@+id/btnOpenMaps"
+        android:layout_above="@+id/view"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="50dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Select Your Location Option"
+        android:id="@+id/textView"
+        android:layout_above="@+id/btnOpenMaps"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_vertical"
+        />
+
+    <Button
+        android:id="@+id/btnOpenMaps"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Use Google Maps"
+        android:background="@color/Shine"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/btnShowLocation"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Use Current Location"
+        android:layout_marginBottom="50dp"
+        android:background="@color/Shine"/>
+
+
+
+</LinearLayout>
