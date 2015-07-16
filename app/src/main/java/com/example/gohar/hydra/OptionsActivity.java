@@ -48,7 +48,7 @@ public class OptionsActivity extends ActionBarActivity {
                     editor.putString("longitude", String.valueOf(longitude));
                     editor.apply();
 
-                    Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.alert_map_latitude) + ": " + latitude + "\n" + getString(R.string.alert_map_longitude) + ": " + longitude, Toast.LENGTH_LONG).show();
                     Intent i=new Intent(getBaseContext(), MainActivity.class);
                     startActivity(i);
                 } else {
@@ -67,7 +67,7 @@ public class OptionsActivity extends ActionBarActivity {
             @Override
             public void onClick(View arg0) {
                 // \n is for new line
-                Toast.makeText(getApplicationContext(), "Long Press to select a location on the map!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.toast_long_press_map), Toast.LENGTH_SHORT).show();
                 Intent i=new Intent(getBaseContext(), MapsActivity.class);
                 startActivity(i);
             }

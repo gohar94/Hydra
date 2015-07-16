@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -28,6 +30,7 @@ public class MapsActivity extends FragmentActivity {
         if (mMap == null) {
             // Happens when play services are not installed/updated
             // This takes to the page to install/update them and prevents from crashing
+            Toast.makeText(this, R.string.toast_error_no_map, Toast.LENGTH_SHORT).show();
             Log.e(LOG_TAG, "Map is null");
             return;
         }
@@ -38,11 +41,11 @@ public class MapsActivity extends FragmentActivity {
             public void onMapLongClick(final LatLng point) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-                builder.setTitle("Title");
-                builder.setMessage("Selected Location is \nLat:" + point.latitude + "\nLng: " + point.longitude);
+                builder.setTitle(R.string.alert_map_title);
+                builder.setMessage(getString(R.string.alert_map_latitude) + ": " + point.latitude + "\n" + getString(R.string.alert_map_longitude) + ": " + point.longitude);
 
                 // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.alert_map_ok_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MapsActivity.this);
@@ -54,7 +57,7 @@ public class MapsActivity extends FragmentActivity {
                         startActivity(i);
                     }
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(R.string.alert_map_cancel_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -95,9 +98,7 @@ public class MapsActivity extends FragmentActivity {
                     .getMap();
             // Check if we were successful in obtaining the map.
 
-            Log.v(LOG_TAG, "I'm here");
             if (mMap != null) {
-                Log.v(LOG_TAG, "I'm in");
                 setUpMap();
             }
         }
@@ -111,6 +112,7 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setUpMap() {
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(31, 71), 5.0f) );
     }
 
 }

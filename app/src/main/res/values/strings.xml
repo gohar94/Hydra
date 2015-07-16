@@ -8,6 +8,10 @@
     <string name="title_activity_detail">Detail</string>
     <string name="title_activity_settings">Settings</string>
 
+    <!-- Buttons -->
+    <string name="button_use_google_maps">Use Google Maps</string>
+    <string name="button_use_current_location">Use Current Location</string>
+
     <!-- Label for latitude of location preference [CHAR LIMIT = 30] -->
     <string name="pref_location_latitude_label">Latitude</string>
 
@@ -27,4 +31,17 @@
     <string name="pref_location_longitude_default" translatable="false">74.343613</string>
     <string name="title_activity_options">OptionsActivity</string>
     <string name="title_activity_maps">Map</string>
+
+    <!-- Toasts -->
+    <string name="toast_error_connection">Connection Error!</string>
+    <string name="toast_fetching_data">Fetching Data!</string>
+    <string name="toast_error_no_map">Could not open Google Maps</string>
+    <string name="toast_long_press_map">Long press to select a location on the map!</string>
+
+    <!-- Map Alert -->
+    <string name="alert_map_latitude">Latitude</string>
+    <string name="alert_map_longitude">Longitude</string>
+    <string name="alert_map_title">Selected Location</string>
+    <string name="alert_map_ok_button">OK</string>
+    <string name="alert_map_cancel_button">Cancel</string>
 </resources>

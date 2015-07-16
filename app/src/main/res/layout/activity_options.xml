@@ -49,7 +49,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Use Google Maps"
+        android:text="@string/button_use_google_maps"
         android:background="@color/Shine"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"/>
@@ -60,7 +60,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Use Current Location"
+        android:text="@string/button_use_current_location"
         android:layout_marginBottom="50dp"
         android:background="@color/Shine"/>
 

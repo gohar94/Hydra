@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.gohar.hydra.data.Constants;
 
@@ -51,7 +52,11 @@ import java.util.Map;
  */
 public class ResultsFragment extends Fragment {
 
+    // only contains the dates
     private ArrayAdapter<String> resultsAdapter;
+
+    // contains the detail corresponding to each element in resultsAdapter
+    private ArrayList<String> resultsDetails;
     private static String oauthToken = null;
     private final String LOG_TAG = ResultsFragment.class.getSimpleName();
 
@@ -126,6 +131,8 @@ public class ResultsFragment extends Fragment {
                 // Data to display on the list
                 results);
 
+        resultsDetails = new ArrayList<String>();
+
         // Find the list view to populate
         ListView listView = (ListView) rootView.findViewById(R.id.listview_results);
         // Assign the adapter to the list view
@@ -133,7 +140,7 @@ public class ResultsFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String result = resultsAdapter.getItem(position);
+                String result = resultsDetails.get(position);
                 Intent intent = new Intent(getActivity(), DetailActivity.class).
                         putExtra(Intent.EXTRA_TEXT, result);
                 startActivity(intent);
@@ -581,6 +588,7 @@ public class ResultsFragment extends Fragment {
                 if (oauthToken == null) {
                     // Could not obtain oauth token
                     Log.e(LOG_TAG, "Could not obtain token");
+                    Toast.makeText(getActivity(), R.string.toast_error_connection, Toast.LENGTH_SHORT).show();
                     return null;
                 }
 
@@ -603,12 +611,24 @@ public class ResultsFragment extends Fragment {
             return results;
         }
 
+        // Formatting string to get date from API result response
+        private String getDateFromResult(String result) {
+            // input date is in the format e.g. "Date = 2015-07-09T00:00:00"
+            String temp = result.split("Max/Min")[0];
+            temp = temp.split("Date = ")[1];
+            temp = temp.split("T")[0];
+            return temp;
+        }
+
         @Override
         protected void onPostExecute(String[] results) {
             if (results != null) {
                 resultsAdapter.clear();
                 for (String result : results) {
-                    resultsAdapter.add(result);
+                    resultsDetails.add(result);
+                    String temp = getDateFromResult(result);
+                    Log.v(LOG_TAG, temp);
+                    resultsAdapter.add(temp);
                 }
             }
         }

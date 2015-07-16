@@ -19,7 +19,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(this, "Fetching data", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.toast_fetching_data, Toast.LENGTH_SHORT).show();
 
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
