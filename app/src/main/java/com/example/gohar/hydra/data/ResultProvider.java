@@ -30,8 +30,8 @@ public class ResultProvider extends ContentProvider {
 
         // For each type of URI you want to add, create a corresponding code.
         matcher.addURI(authority, ResultsContract.PATH_RESULT, RESULT);
-        matcher.addURI(authority, ResultsContract.PATH_RESULT + "/#/#", RESULT_WITH_LOCATION); // latitude/longitude
-        matcher.addURI(authority, ResultsContract.PATH_RESULT + "/#/#/*", RESULT_WITH_LOCATION_AND_DATE); // latitude/longitude/date
+        matcher.addURI(authority, ResultsContract.PATH_RESULT + "/*/*", RESULT_WITH_LOCATION); // latitude/longitude
+        matcher.addURI(authority, ResultsContract.PATH_RESULT + "/*/*/*", RESULT_WITH_LOCATION_AND_DATE); // latitude/longitude/date
 
         matcher.addURI(authority, ResultsContract.PATH_LOCATION, LOCATION);
         matcher.addURI(authority, ResultsContract.PATH_LOCATION + "/#", LOCATION_ID);
@@ -52,7 +52,23 @@ public class ResultProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        return null;
+        // Use the Uri Matcher to determine what kind of URI this is.
+        final int match = sUriMatcher.match(uri);
+
+        switch (match) {
+            case RESULT_WITH_LOCATION_AND_DATE:
+                return ResultsContract.ResultEntry.CONTENT_ITEM_TYPE;
+            case RESULT_WITH_LOCATION:
+                return ResultsContract.ResultEntry.CONTENT_TYPE;
+            case RESULT:
+                return ResultsContract.ResultEntry.CONTENT_TYPE;
+            case LOCATION:
+                return ResultsContract.LocationEntry.CONTENT_TYPE;
+            case LOCATION_ID:
+                return ResultsContract.LocationEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
     }
 
     @Override

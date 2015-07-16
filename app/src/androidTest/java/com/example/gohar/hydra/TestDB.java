@@ -17,7 +17,7 @@ import java.util.Set;
  */
 public class TestDB extends AndroidTestCase {
     public static final String LOG_TAG = TestDB.class.getSimpleName();
-    public String TEST_CITY_NAME = "Lahore";
+    public static String TEST_CITY_NAME = "Lahore";
 
     public void testCreateDb() throws Throwable {
         mContext.deleteDatabase(ResultsDBHelper.DATABASE_NAME);
@@ -27,10 +27,10 @@ public class TestDB extends AndroidTestCase {
         db.close();
     }
 
-    public ContentValues getLocationContentValues() {
+    public static ContentValues getLocationContentValues() {
         // Test data we're going to insert into the DB to see if it works.
         double testLatitude = 31.2;
-        double testLongitude = 74.353;
+        double testLongitude = 74.3;
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
@@ -40,11 +40,11 @@ public class TestDB extends AndroidTestCase {
         return values;
     }
 
-    public ContentValues getResultContentValues(long locationRowId) {
+    public static ContentValues getResultContentValues(long locationRowId) {
         // Fantastic.  Now that we have a location, add some weather!
         ContentValues resultValues = new ContentValues();
         resultValues.put(ResultsContract.ResultEntry.COLUMN_LOC_KEY, locationRowId);
-        resultValues.put(ResultsContract.ResultEntry.COLUMN_START_DATE, "2014-04-06");
+        resultValues.put(ResultsContract.ResultEntry.COLUMN_START_DATE, "2014-06-12");
         resultValues.put(ResultsContract.ResultEntry.COLUMN_MIN_TEMP, 44.4);
         resultValues.put(ResultsContract.ResultEntry.COLUMN_MAX_TEMP, 54.4);
         resultValues.put(ResultsContract.ResultEntry.COLUMN_PRECIP, 4.4);
@@ -121,7 +121,7 @@ public class TestDB extends AndroidTestCase {
         dbHelper.close();
     }
 
-    static void validateCursor(ContentValues expectedValues, Cursor valueCursor) {
+    public static void validateCursor(ContentValues expectedValues, Cursor valueCursor) {
 
         assertTrue(valueCursor.moveToFirst());
 
