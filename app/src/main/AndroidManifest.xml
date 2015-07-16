@@ -87,6 +87,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.gohar.hydra.OptionsActivity" />
         </activity>
+        <provider
+            android:authorities="com.example.gohar.hydra.app"
+            android:name=".data.ResultProvider" />
     </application>
 
 </manifest>
