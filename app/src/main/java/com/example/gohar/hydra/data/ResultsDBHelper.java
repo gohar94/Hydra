@@ -21,11 +21,10 @@ public class ResultsDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " + ResultsContract.LocationEntry.TABLE_NAME + " (" +
                 ResultsContract.LocationEntry._ID + " INTEGER PRIMARY KEY," +
-                ResultsContract.LocationEntry.COLUMN_LOCATION_SETTING + " TEXT UNIQUE NOT NULL, " +
                 ResultsContract.LocationEntry.COLUMN_CITY_NAME + " TEXT, " +
                 ResultsContract.LocationEntry.COLUMN_LATITUDE + " REAL NOT NULL, " +
                 ResultsContract.LocationEntry.COLUMN_LONGITUDE + " REAL NOT NULL, " +
-                "UNIQUE (" + ResultsContract.LocationEntry.COLUMN_LOCATION_SETTING +") ON CONFLICT IGNORE"+
+                "UNIQUE (" + ResultsContract.LocationEntry.COLUMN_LATITUDE + ", " + ResultsContract.LocationEntry.COLUMN_LONGITUDE + ") ON CONFLICT IGNORE"+
                 " );";
 
         final String SQL_CREATE_RESULTS_TABLE = "CREATE TABLE " + ResultsContract.ResultEntry.TABLE_NAME + " (" +

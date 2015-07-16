@@ -627,7 +627,6 @@ public class ResultsFragment extends Fragment {
                 for (String result : results) {
                     resultsDetails.add(result);
                     String temp = getDateFromResult(result);
-                    Log.v(LOG_TAG, temp);
                     resultsAdapter.add(temp);
                 }
             }
