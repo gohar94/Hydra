@@ -1,6 +1,7 @@
 package com.example.gohar.hydra.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -46,8 +47,68 @@ public class ResultProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] strings, String s, String[] strings2, String s2) {
-        return null;
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+                        String sortOrder) {
+        // Here's the switch statement that, given a URI, will determine what kind of request it is,
+        // and query the database accordingly.
+        Cursor retCursor;
+        switch (sUriMatcher.match(uri)) {
+            // "weather/*/*"
+            case RESULT_WITH_LOCATION_AND_DATE:
+            {
+                retCursor = null;
+                break;
+            }
+            // "weather/*"
+            case RESULT_WITH_LOCATION: {
+                retCursor = null;
+                break;
+            }
+            // "weather"
+            case RESULT: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        ResultsContract.ResultEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            // "location/*"
+            case LOCATION_ID: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        ResultsContract.LocationEntry.TABLE_NAME,
+                        projection,
+                        ResultsContract.LocationEntry._ID + " = '" + ContentUris.parseId(uri) + "'",
+                        null,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            // "location"
+            case LOCATION: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        ResultsContract.LocationEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return retCursor;
     }
 
     @Override

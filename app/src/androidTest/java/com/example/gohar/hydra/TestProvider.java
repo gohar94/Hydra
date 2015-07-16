@@ -20,7 +20,7 @@ public class TestProvider extends AndroidTestCase {
         mContext.deleteDatabase(ResultsDBHelper.DATABASE_NAME);
     }
 
-    public void testInsertReadDb() {
+    public void testInsertReadProvider() {
         // If there's an error in those massive SQL table creation Strings,
         // errors will be thrown here when you try to get a writable database.
         ResultsDBHelper dbHelper = new ResultsDBHelper(mContext);
@@ -39,14 +39,12 @@ public class TestProvider extends AndroidTestCase {
         // the round trip.
 
         // A cursor is your primary interface to the query results.
-        Cursor cursor = db.query(
-                ResultsContract.LocationEntry.TABLE_NAME,  // Table to Query
-                null,
-                null, // Columns for the "where" clause
-                null, // Values for the "where" clause
-                null, // columns to group by
-                null, // columns to filter by row groups
-                null // sort order
+        Cursor cursor = mContext.getContentResolver().query(
+                ResultsContract.LocationEntry.buildLocationUri(locationRowId),
+                null, // leaving "columns" null just returns all the columns.
+                null, // cols for "where" clause
+                null, // values for "where" clause
+                null  // sort order
         );
 
         TestDB.validateCursor(values, cursor);
@@ -55,14 +53,12 @@ public class TestProvider extends AndroidTestCase {
         long weatherRowId = db.insert(ResultsContract.ResultEntry.TABLE_NAME, null, resultValues);
         assertTrue(weatherRowId != -1);
 
-        // A cursor is your primary interface to the query results.
-        Cursor resultCursor = db.query(
-                ResultsContract.ResultEntry.TABLE_NAME,  // Table to Query
+        // Now see if we can successfully query if we include the row id
+        Cursor resultCursor = mContext.getContentResolver().query(
+                ResultsContract.ResultEntry.CONTENT_URI,  // Table to Query
                 null, // leaving "columns" null just returns all the columns.
                 null, // cols for "where" clause
                 null, // values for "where" clause
-                null, // columns to group by
-                null, // columns to filter by row groups
                 null  // sort order
         );
 
@@ -101,7 +97,7 @@ public class TestProvider extends AndroidTestCase {
 
         // content://com.example.gohar.hydra.app/location/1
         type = mContext.getContentResolver().getType(ResultsContract.LocationEntry.buildLocationUri(1L));
-        // vnd.android.cursor.item/com.example.android.sunshine.app/location
+        // vnd.android.cursor.item/com.example.gohar.hydra.app/location
         assertEquals(ResultsContract.LocationEntry.CONTENT_ITEM_TYPE, type);
     }
 }
