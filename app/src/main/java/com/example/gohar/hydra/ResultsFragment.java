@@ -22,6 +22,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.gohar.hydra.data.Constants;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -158,7 +160,7 @@ public class ResultsFragment extends Fragment {
         /**
          * Prepare the attributes max and min temperature for presentation.
          */
-        private String formatMaxMin(double max, double min) {
+        private String formatMaxMinTemp(double max, double min) {
             // For presentation, assume the user doesn't care about tenths of a degree.
             long roundedHigh = Math.round(max);
             long roundedLow = Math.round(min);
@@ -168,13 +170,43 @@ public class ResultsFragment extends Fragment {
         }
 
         /**
-         * Prepare the attribute precip for presentation.
+         * Prepare the attribute having mm as unit for presentation.
          */
-        private String formatPrecip(double precip) {
-            long roundedPrecip = Math.round(precip);
+        private String formatMillimeter(double precip) {
+            long rounded = Math.round(precip);
 
-            String finalPrecip = roundedPrecip + "mm";
-            return finalPrecip;
+            String mFinal = rounded + "mm";
+            return mFinal;
+        }
+
+        /**
+         * Prepare the attribute having wh/m2 as unit for presentation.
+         */
+        private String formatWattHours(double precip) {
+            long rounded = Math.round(precip);
+
+            String mFinal = rounded + "wh/m2";
+            return mFinal;
+        }
+
+        /**
+         * Prepare the attribute having % as unit for presentation.
+         */
+        private String formatPercentage(double precip) {
+            long rounded = Math.round(precip);
+
+            String mFinal = rounded + "%";
+            return mFinal;
+        }
+
+        /**
+         * Prepare the attribute having m/s as unit for presentation.
+         */
+        private String formatMeterPerSecond(double precip) {
+            long rounded = Math.round(precip);
+
+            String mFinal = rounded + "m/s";
+            return mFinal;
         }
 
         /**
@@ -187,51 +219,128 @@ public class ResultsFragment extends Fragment {
         private String[] getWeatherDataFromJson(String resultJsonStr)
                 throws JSONException {
 
-            // These are the names of the JSON objects that need to be extracted.
-            final String DAILY_ATTRIBUTES = "dailyAttributes";
-            final String MAX_TEMPERATURE = "maxTemperature";
-            final String MIN_TEMPERATURE = "minTemperature";
-            final String PRECIP = "precip";
-            final String DATE = "date";
-
             JSONArray resultsArray = new JSONArray(resultJsonStr);
 
             String[] resultStrs = new String[resultsArray.length()];
             for (int i = 0; i < resultsArray.length(); i++) {
-                String maxAndMin = "";
-                String precipitation = "";
                 String date = "";
                 Double maxTemperature = Double.NaN;
                 Double minTemperature = Double.NaN;;
                 Double precip = Double.NaN;
+                Double accPrecip = Double.NaN;
+                Double accPrecipPriorYear = Double.NaN;
+                Double accPrecip3YearAverage = Double.NaN;
+                Double accPrecipLongTermAverage = Double.NaN;
+                Double solar = Double.NaN;
+                Double minHumidity = Double.NaN;
+                Double maxHumidity = Double.NaN;
+                Double mornWind = Double.NaN;
+                Double maxWind = Double.NaN;
+                Double gdd = Double.NaN;
+                Double accGdd = Double.NaN;
+                Double accGddPriorYear = Double.NaN;
+                Double accGdd3YearAverage = Double.NaN;
+                Double accGddLongTermAverage = Double.NaN;
+                Double pet = Double.NaN;
+                Double accPet = Double.NaN;
+                Double ppet = Double.NaN;
 
                 // Get the JSON object representing the day
                 JSONObject result = resultsArray.getJSONObject(i);
 
-                if (result.has(DAILY_ATTRIBUTES)) {
-                    JSONObject dailyAttributes = result.getJSONObject(DAILY_ATTRIBUTES);
+                if (result.has(Constants.DAILY_ATTRIBUTES)) {
+                    JSONObject dailyAttributes = result.getJSONObject(Constants.DAILY_ATTRIBUTES);
 
-                    if (dailyAttributes.getString(MAX_TEMPERATURE) != "null")
-                        maxTemperature = dailyAttributes.getDouble(MAX_TEMPERATURE);
+                    if (dailyAttributes.has(Constants.MAX_TEMPERATURE) && dailyAttributes.getString(Constants.MAX_TEMPERATURE) != "null")
+                        maxTemperature = dailyAttributes.getDouble(Constants.MAX_TEMPERATURE);
 
-                    if (dailyAttributes.getString(MIN_TEMPERATURE) != "null")
-                        minTemperature = dailyAttributes.getDouble(MIN_TEMPERATURE);
+                    if (dailyAttributes.has(Constants.MIN_TEMPERATURE) && dailyAttributes.getString(Constants.MIN_TEMPERATURE) != "null")
+                        minTemperature = dailyAttributes.getDouble(Constants.MIN_TEMPERATURE);
 
-                    if (dailyAttributes.getString(PRECIP) != "null")
-                        precip = dailyAttributes.getDouble(PRECIP);
+                    if (dailyAttributes.has(Constants.PRECIP) && dailyAttributes.getString(Constants.PRECIP) != "null")
+                        precip = dailyAttributes.getDouble(Constants.PRECIP);
 
-                    maxAndMin = formatMaxMin(maxTemperature, minTemperature);
-                    precipitation = formatPrecip(precip);
+                    if (dailyAttributes.has(Constants.ACC_PRECIP) && dailyAttributes.getString(Constants.ACC_PRECIP) != "null")
+                        accPrecip = dailyAttributes.getDouble(Constants.ACC_PRECIP);
+
+                    if (dailyAttributes.has(Constants.ACC_PRECIP_PRIOR_YEAR) && dailyAttributes.getString(Constants.ACC_PRECIP_PRIOR_YEAR) != "null")
+                        accPrecipPriorYear = dailyAttributes.getDouble(Constants.ACC_PRECIP_PRIOR_YEAR);
+
+                    if (dailyAttributes.has(Constants.ACC_PRECIP_3_YEAR_AVERAGE) && dailyAttributes.getString(Constants.ACC_PRECIP_3_YEAR_AVERAGE) != "null")
+                        accPrecip3YearAverage = dailyAttributes.getDouble(Constants.ACC_PRECIP_3_YEAR_AVERAGE);
+
+                    if (dailyAttributes.has(Constants.ACC_PRECIP_LONG_TERM_AVERAGE) && dailyAttributes.getString(Constants.ACC_PRECIP_LONG_TERM_AVERAGE) != "null")
+                        accPrecipLongTermAverage = dailyAttributes.getDouble(Constants.ACC_PRECIP_LONG_TERM_AVERAGE);
+
+                    if (dailyAttributes.has(Constants.SOLAR) && dailyAttributes.getString(Constants.SOLAR) != "null")
+                        solar = dailyAttributes.getDouble(Constants.SOLAR);
+
+                    if (dailyAttributes.has(Constants.MIN_HUMIDITY) && dailyAttributes.getString(Constants.MIN_HUMIDITY) != "null")
+                        minHumidity = dailyAttributes.getDouble(Constants.MIN_HUMIDITY);
+
+                    if (dailyAttributes.has(Constants.MAX_HUMIDITY) && dailyAttributes.getString(Constants.MAX_HUMIDITY) != "null")
+                        maxHumidity = dailyAttributes.getDouble(Constants.MAX_HUMIDITY);
+
+                    if (dailyAttributes.has(Constants.MORN_WIND) && dailyAttributes.getString(Constants.MORN_WIND) != "null")
+                        mornWind = dailyAttributes.getDouble(Constants.MORN_WIND);
+
+                    if (dailyAttributes.has(Constants.MAX_WIND) && dailyAttributes.getString(Constants.MAX_WIND) != "null")
+                        maxWind = dailyAttributes.getDouble(Constants.MAX_WIND);
+
+                    if (dailyAttributes.has(Constants.GDD) && dailyAttributes.getString(Constants.GDD) != "null")
+                        gdd = dailyAttributes.getDouble(Constants.GDD);
+
+                    if (dailyAttributes.has(Constants.ACC_GDD) && dailyAttributes.getString(Constants.ACC_GDD) != "null")
+                        accGdd = dailyAttributes.getDouble(Constants.ACC_GDD);
+
+                    if (dailyAttributes.has(Constants.ACC_GDD_PRIOR_YEAR) && dailyAttributes.getString(Constants.ACC_GDD_PRIOR_YEAR) != "null")
+                        accGddPriorYear = dailyAttributes.getDouble(Constants.ACC_GDD_PRIOR_YEAR);
+
+                    if (dailyAttributes.has(Constants.ACC_GDD_3_YEAR_AVERAGE) && dailyAttributes.getString(Constants.ACC_GDD_3_YEAR_AVERAGE) != "null")
+                        accGdd3YearAverage = dailyAttributes.getDouble(Constants.ACC_GDD_3_YEAR_AVERAGE);
+
+                    if (dailyAttributes.has(Constants.ACC_GDD_LONG_TERM_AVERAGE) && dailyAttributes.getString(Constants.ACC_GDD_LONG_TERM_AVERAGE) != "null")
+                        accGddLongTermAverage = dailyAttributes.getDouble(Constants.ACC_GDD_LONG_TERM_AVERAGE);
+
+                    if (dailyAttributes.has(Constants.PET) && dailyAttributes.getString(Constants.PET) != "null")
+                        pet = dailyAttributes.getDouble(Constants.PET);
+
+                    if (dailyAttributes.has(Constants.ACC_PET) && dailyAttributes.getString(Constants.ACC_PET) != "null")
+                        accPet = dailyAttributes.getDouble(Constants.ACC_PET);
+
+                    if (dailyAttributes.has(Constants.PPET) && dailyAttributes.getString(Constants.PPET) != "null")
+                        ppet = dailyAttributes.getDouble(Constants.PPET);
+
+                    if (result.has(Constants.DATE) && result.getString(Constants.DATE) != "null")
+                        date = result.getString(Constants.DATE);
+
+                    // formatting the variables for presentation and appending to string
+                    resultStrs[i] = "Date = " + date + "\n";
+                    resultStrs[i]+= "Max/Min Temperature = " + formatMaxMinTemp(maxTemperature, minTemperature) + "\n";
+                    resultStrs[i]+= "Precipitation = " + formatMillimeter(precip) + "\n";
+                    resultStrs[i]+= "Total accumulated precipitation from start date of the requested period = " + formatMillimeter(accPrecip) + "\n";
+                    resultStrs[i]+= "Total accumulated precipitation for the same date range in the prior year = " + formatMillimeter(accPrecipPriorYear) + "\n";
+                    resultStrs[i]+= "Avg. total accumulated precipitation for the same date range over prior 3 years = " + formatMillimeter(accPrecip3YearAverage) + "\n";
+                    resultStrs[i]+= "Avg. total accumulated precipitation for the input date range over [up to] the past 10 years = " + formatMillimeter(accPrecipLongTermAverage) + "\n";
+                    resultStrs[i]+= "Summation of total solar energy received during day = " + formatWattHours(solar) + "\n";
+                    resultStrs[i]+= "Lowest % relative humidity recorded for day = " + formatPercentage(minHumidity) + "\n";
+                    resultStrs[i]+= "Highest % relative humidity recorded for day = " + formatPercentage(maxHumidity) + "\n";
+                    resultStrs[i]+= "Morning’s highest wind speed = " + formatMeterPerSecond(mornWind) + "\n";
+                    resultStrs[i]+= "Day’s highest wind speed = " + formatMeterPerSecond(maxWind) + "\n";
+                    resultStrs[i]+= "Growing Degree Days (# of heat units achieved per day) = " + Math.round(gdd) + "\n";
+                    resultStrs[i]+= "Total accumulated GDDs from start date of the requested period = " + Math.round(accGdd) + "\n";
+                    resultStrs[i]+= "Total accumulated GDDs for the same date range in the prior year = " + Math.round(accGddPriorYear) + "\n";
+                    resultStrs[i]+= "Avg. total accumulated GDDs for the same date range over the prior 3 years = " + Math.round(accGdd3YearAverage) + "\n";
+                    resultStrs[i]+= "Avg. total accumulated GDDs for the input date range over [up to] the past 10 years = " + Math.round(accGddLongTermAverage) + "\n";
+                    resultStrs[i]+= "Potential Evapotranspiration for each day = " + formatMillimeter(pet) + "\n";
+                    resultStrs[i]+= "Accumulated PET from the start date to each day in the date range = " + formatMillimeter(accPet) + "\n";
+                    resultStrs[i]+= "P/PET or Precipitation over PET, for determining potential crop water stress = " + ppet;
+
                 } else {
                     String errorMessage = "Incomplete information received!";
                     resultStrs[i] = errorMessage;
                     Log.e(LOG_TAG, errorMessage);
                 }
-
-                if (result.getString(DATE) != "null")
-                    date = result.getString(DATE);
-
-                resultStrs[i] = date + " - " + precipitation + " - " + maxAndMin;
             }
 
             return resultStrs;
@@ -348,7 +457,7 @@ public class ResultsFragment extends Fragment {
             return null;
         }
 
-        private String[] getDataFromAPI(String latitude, String longitude, String date, String token) {
+        private String[] getDataFromAPI(String latitude, String longitude, String startDate, String token) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -361,14 +470,31 @@ public class ResultsFragment extends Fragment {
                 // Construct the URL for the API query
                 final String FORECAST_BASE_URL =
                         "https://api.awhere.com/v1/weather";
-                final String LATITUDE = "latitude";
-                final String LONGITUDE = "longitude";
-                final String START_DATE = "startDate";
 
                 Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                        .appendQueryParameter(LATITUDE, latitude)
-                        .appendQueryParameter(LONGITUDE, longitude)
-                        .appendQueryParameter(START_DATE, date)
+                        .appendQueryParameter(Constants.LATITUDE, latitude)
+                        .appendQueryParameter(Constants.LONGITUDE, longitude)
+                        .appendQueryParameter(Constants.START_DATE, startDate)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.MIN_TEMPERATURE)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.MAX_TEMPERATURE)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.PRECIP)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.ACC_PRECIP)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.ACC_PRECIP_PRIOR_YEAR)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.ACC_PRECIP_3_YEAR_AVERAGE)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.ACC_PRECIP_LONG_TERM_AVERAGE)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.SOLAR)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.MIN_HUMIDITY)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.MAX_HUMIDITY)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.MORN_WIND)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.MAX_WIND)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.GDD)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.ACC_GDD)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.ACC_GDD_PRIOR_YEAR)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.ACC_GDD_3_YEAR_AVERAGE)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.ACC_GDD_LONG_TERM_AVERAGE)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.PET)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.ACC_PET)
+                        .appendQueryParameter(Constants.ATTRIBUTE, Constants.PPET)
                         .build();
 
                 URL url = new URL(builtUri.toString());

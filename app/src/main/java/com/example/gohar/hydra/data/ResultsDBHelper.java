@@ -33,7 +33,7 @@ public class ResultsDBHelper extends SQLiteOpenHelper {
 
                 // the ID of the location entry associated with this weather data
                 ResultsContract.ResultEntry.COLUMN_LOC_KEY + " INTEGER NOT NULL, " +
-                ResultsContract.ResultEntry.COLUMN_DATETEXT + " TEXT NOT NULL, " +
+                ResultsContract.ResultEntry.COLUMN_START_DATE + " TEXT NOT NULL, " +
 
                 ResultsContract.ResultEntry.COLUMN_MIN_TEMP + " REAL NOT NULL, " +
                 ResultsContract.ResultEntry.COLUMN_MAX_TEMP + " REAL NOT NULL, " +
@@ -69,7 +69,7 @@ public class ResultsDBHelper extends SQLiteOpenHelper {
 
                 // To assure the application have just one weather entry per day
                 // per location, it's created a UNIQUE constraint with REPLACE strategy
-                " UNIQUE (" + ResultsContract.ResultEntry.COLUMN_DATETEXT + ", " +
+                " UNIQUE (" + ResultsContract.ResultEntry.COLUMN_START_DATE + ", " +
                 ResultsContract.ResultEntry.COLUMN_LOC_KEY + ") ON CONFLICT REPLACE);";
         sqLiteDatabase.execSQL(SQL_CREATE_LOCATION_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_RESULTS_TABLE);

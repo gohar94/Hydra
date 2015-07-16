@@ -28,8 +28,8 @@ public class ResultsContract {
 
         // In order to uniquely pinpoint the location on the map when we launch the
         // map intent, we store the latitude and longitude as returned by openweathermap.
-        public static final String COLUMN_LATITUDE = "latitude";
-        public static final String COLUMN_LONGITUDE = "longitude";
+        public static final String COLUMN_LATITUDE = Constants.LATITUDE;
+        public static final String COLUMN_LONGITUDE = Constants.LONGITUDE;
     }
 
     /* Inner class that defines the table contents of the results table */
@@ -40,49 +40,49 @@ public class ResultsContract {
         // Column with the foreign key into the location table.
         public static final String COLUMN_LOC_KEY = "location_id";
         // Date, stored as Text with format yyyy-MM-dd
-        public static final String COLUMN_DATETEXT = "date";
+        public static final String COLUMN_START_DATE = Constants.START_DATE;
 
         // Min and max temperatures for the day (stored as floats)
-        public static final String COLUMN_MIN_TEMP = "minTemperature";
-        public static final String COLUMN_MAX_TEMP = "maxTemperature";
+        public static final String COLUMN_MIN_TEMP = Constants.MIN_TEMPERATURE;
+        public static final String COLUMN_MAX_TEMP = Constants.MAX_TEMPERATURE;
 
         // Precipitation data
         // All of this is in (mm)
-        public static final String COLUMN_PRECIP = "precip";
-        public static final String COLUMN_ACC_PRECIP = "accPrecip";
-        public static final String COLUMN_ACC_PRECIP_PRIOR_YEAR = "accPrecipPriorYear";
-        public static final String COLUMN_ACC_PRECIP_3_YEAR_AVERAGE = "accPrecip3YearAverage";
-        public static final String COLUMN_ACC_PRECIP_LONG_TERM_AVERAGE = "accPrecipLongTermAverage";
+        public static final String COLUMN_PRECIP = Constants.PRECIP;
+        public static final String COLUMN_ACC_PRECIP = Constants.ACC_PRECIP;
+        public static final String COLUMN_ACC_PRECIP_PRIOR_YEAR = Constants.ACC_PRECIP_PRIOR_YEAR;
+        public static final String COLUMN_ACC_PRECIP_3_YEAR_AVERAGE = Constants.ACC_PRECIP_3_YEAR_AVERAGE;
+        public static final String COLUMN_ACC_PRECIP_LONG_TERM_AVERAGE = Constants.ACC_PRECIP_LONG_TERM_AVERAGE;
 
         // Units = watt hours/sq. meter [wh/m2]
-        public static final String COLUMN_SOLAR = "solar";
+        public static final String COLUMN_SOLAR = Constants.SOLAR;
 
         // Humidity data
         // Units = %
-        public static final String COLUMN_MIN_HUMIDITY = "minHumidity";
-        public static final String COLUMN_MAX_HUMIDITY = "maxHumidity";
+        public static final String COLUMN_MIN_HUMIDITY = Constants.MIN_HUMIDITY;
+        public static final String COLUMN_MAX_HUMIDITY = Constants.MAX_HUMIDITY;
 
         // Wind data
         // Units = meters/sec [m/s]
-        public static final String COLUMN_MORN_WIND = "mornWind";
-        public static final String COLUMN_MAX_WIND = "maxWind";
+        public static final String COLUMN_MORN_WIND = Constants.MORN_WIND;
+        public static final String COLUMN_MAX_WIND = Constants.MAX_WIND;
 
         // GDD data (growing degree days)
         // Unit = heat units
-        public static final String COLUMN_GDD = "gdd";
-        public static final String COLUMN_ACC_GDD = "accGdd";
-        public static final String COLUMN_ACC_GDD_PRIOR_YEAR = "accGddPriorYear";
-        public static final String COLUMN_ACC_GDD_3_YEAR_AVERAGE = "accGdd3YearAverage";
+        public static final String COLUMN_GDD = Constants.GDD;
+        public static final String COLUMN_ACC_GDD = Constants.ACC_GDD;
+        public static final String COLUMN_ACC_GDD_PRIOR_YEAR = Constants.ACC_GDD_PRIOR_YEAR;
+        public static final String COLUMN_ACC_GDD_3_YEAR_AVERAGE = Constants.ACC_GDD_3_YEAR_AVERAGE;
         // unit is in mm? Not sure
-        public static final String COLUMN_ACC_GDD_LONG_TERM_AVERAGE = "accGddLongTermAverage";
+        public static final String COLUMN_ACC_GDD_LONG_TERM_AVERAGE = Constants.ACC_GDD_LONG_TERM_AVERAGE;
 
         // Potential evapotranspiration data or PET
         // Unit = mm
-        public static final String COLUMN_PET = "pet";
-        public static final String COLUMN_ACC_PET = "accPet";
+        public static final String COLUMN_PET = Constants.PET;
+        public static final String COLUMN_ACC_PET = Constants.ACC_PET;
 
         // This is a ratio
-        public static final String COLUMN_PPET = "ppet";
+        public static final String COLUMN_PPET = Constants.PPET;
 
     }
 }
