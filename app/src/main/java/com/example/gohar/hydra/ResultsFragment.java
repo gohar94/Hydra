@@ -159,7 +159,7 @@ public class ResultsFragment extends Fragment implements LoaderManager.LoaderCal
                     }
                     case COL_RESULT_DATE: {
                         String dateString = cursor.getString(columnIndex);
-                        Log.v(LOG_TAG, "in set view max temp : " + cursor.getString(columnIndex));
+                        Log.v(LOG_TAG, "in set view date : " + cursor.getString(columnIndex));
                         TextView dateView = (TextView) view;
                         dateView.setText(dateString);
                         return true;
