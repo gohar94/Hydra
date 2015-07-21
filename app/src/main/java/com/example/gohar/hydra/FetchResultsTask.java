@@ -541,12 +541,13 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
             urlConnection.connect();
 
             int responseCode = urlConnection.getResponseCode();
-            Log.v(LOG_TAG, "Respond Code is " + responseCode);
+            String responseMessage = urlConnection.getResponseMessage();
+            Log.v(LOG_TAG, "Respond Code is " + responseCode + " - " + responseMessage);
 
             if (responseCode != 200) {
                 // Authorization token invalid
                 String[] results = {"-1"};
-                Log.e(LOG_TAG, "Response Code not OK, it is = " + responseCode);
+                Log.v(LOG_TAG, "Respond Code is " + responseCode + " - " + responseMessage);
                 return results;
             }
 
