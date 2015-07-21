@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
 /**
  * Defines table and column names for the weather database.
  */
-public class ResultsContract {
+public class ResultContract {
 
     // The "Content authority" is a name for the entire content provider, similar to the
     // relationship between a domain name and its website.  A convenient string to use for the
@@ -72,7 +72,7 @@ public class ResultsContract {
         // Column with the foreign key into the location table.
         public static final String COLUMN_LOC_KEY = "location_id";
         // Date, stored as Text with format yyyy-MM-dd
-        public static final String COLUMN_START_DATE = Constants.START_DATE;
+        public static final String COLUMN_DATE = Constants.DATE;
 
         // Min and max temperatures for the day (stored as floats)
         public static final String COLUMN_MIN_TEMP = Constants.MIN_TEMPERATURE;
@@ -124,12 +124,14 @@ public class ResultsContract {
             return CONTENT_URI.buildUpon().appendPath(latitude).appendPath(longitude).build();
         }
 
+        // for matching on all dates after or equal to start date
         public static Uri buildResultLocationWithStartDate(
                 String latitude, String longitude, String startDate) {
             return CONTENT_URI.buildUpon().appendPath(latitude).appendPath(longitude)
-                    .appendQueryParameter(COLUMN_START_DATE, startDate).build();
+                    .appendQueryParameter(Constants.START_DATE, startDate).build();
         }
 
+        // for matching with exact date
         public static Uri buildResultLocationWithDate(String latitude, String longitude, String date) {
             return CONTENT_URI.buildUpon().appendPath(latitude).appendPath(longitude).appendPath(date).build();
         }
@@ -147,7 +149,7 @@ public class ResultsContract {
         }
 
         public static String getStartDateFromUri(Uri uri) {
-            return uri.getQueryParameter(COLUMN_START_DATE);
+            return uri.getQueryParameter(Constants.START_DATE);
         }
 
     }
