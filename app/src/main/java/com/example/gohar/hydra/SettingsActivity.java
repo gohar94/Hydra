@@ -6,8 +6,14 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
+import com.example.gohar.hydra.data.ResultContract;
+
 public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener {
+
+    // since we use the preference change initially to populate the summary
+    // field, we'll ignore that change at start of the activity
+    boolean mBindingPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +34,8 @@ public class SettingsActivity extends PreferenceActivity
      * is changed.)
      */
     private void bindPreferenceSummaryToValue(Preference preference) {
+        mBindingPreference = true;
+
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(this);
 
@@ -42,6 +50,19 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
         String stringValue = value.toString();
+
+        // are we starting the preference activity?
+        if ( !mBindingPreference ) {
+            if (preference.getKey().equals(getString(R.string.pref_location_latitude_key))
+                    || preference.getKey().equals((getString(R.string.pref_location_longitude_key)))) {
+                FetchResultsTask resultsTask = new FetchResultsTask(this);
+                String location = value.toString();
+                resultsTask.execute(location);
+            } else {
+                // notify code that weather may be impacted
+                getContentResolver().notifyChange(ResultContract.ResultEntry.CONTENT_URI, null);
+            }
+        }
 
         if (preference instanceof ListPreference) {
             // For list preferences, look up the correct display value in

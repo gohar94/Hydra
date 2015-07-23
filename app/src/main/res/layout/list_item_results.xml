@@ -19,19 +19,20 @@
         android:layout_height="match_parent"
         android:text=" - " />
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/list_item_temp_high_textview" />
+    <!-- Below text views to show additional info on main screen -->
+    <!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/list_item_temp_high_textview" />-->
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="/" />
+    <!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text="/" />-->
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/list_item_temp_low_textview" />
+    <!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/list_item_temp_low_textview" />-->
 
 </LinearLayout>

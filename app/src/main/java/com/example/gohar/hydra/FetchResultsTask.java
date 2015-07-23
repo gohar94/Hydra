@@ -28,8 +28,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -51,70 +49,6 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
 
     public FetchResultsTask(Context context) {
         mContext = context;
-    }
-
-
-    /* The date/time conversion code is going to be moved outside the asynctask later,
-     * so for convenience we're breaking it out into its own method now.
-     */
-    private String getReadableDateString(long time){
-        // Because the API returns a unix timestamp (measured in seconds),
-        // it must be converted to milliseconds in order to be converted to valid date.
-        Date date = new Date(time * 1000);
-        SimpleDateFormat format = new SimpleDateFormat("E, MMM d");
-        return format.format(date).toString();
-    }
-
-    /**
-     * Prepare the attributes max and min temperature for presentation.
-     */
-    private String formatMaxMinTemp(double max, double min) {
-        // For presentation, assume the user doesn't care about tenths of a degree.
-        long roundedHigh = Math.round(max);
-        long roundedLow = Math.round(min);
-
-        String highLowStr = roundedHigh + "/" + roundedLow + "°C";
-        return highLowStr;
-    }
-
-    /**
-     * Prepare the attribute having mm as unit for presentation.
-     */
-    private String formatMillimeter(double precip) {
-        long rounded = Math.round(precip);
-
-        String mFinal = rounded + "mm";
-        return mFinal;
-    }
-
-    /**
-     * Prepare the attribute having wh/m2 as unit for presentation.
-     */
-    private String formatWattHours(double precip) {
-        long rounded = Math.round(precip);
-
-        String mFinal = rounded + "wh/m2";
-        return mFinal;
-    }
-
-    /**
-     * Prepare the attribute having % as unit for presentation.
-     */
-    private String formatPercentage(double precip) {
-        long rounded = Math.round(precip);
-
-        String mFinal = rounded + "%";
-        return mFinal;
-    }
-
-    /**
-     * Prepare the attribute having m/s as unit for presentation.
-     */
-    private String formatMeterPerSecond(double precip) {
-        long rounded = Math.round(precip);
-
-        String mFinal = rounded + "m/s";
-        return mFinal;
     }
 
     /**
@@ -166,7 +100,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
-    private String[] getWeatherDataFromJson(String resultJsonStr, long locationID)
+    private void getWeatherDataFromJson(String resultJsonStr, long locationID)
             throws JSONException {
 
         JSONArray resultsArray = new JSONArray(resultJsonStr);
@@ -313,26 +247,26 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
                 }
 
                 // formatting the variables for presentation and appending to string
-                resultStrs[i] = "Date = " + date + "\n";
-                resultStrs[i]+= "Max/Min Temperature = " + formatMaxMinTemp(maxTemperature, minTemperature) + "\n";
-                resultStrs[i]+= "Precipitation = " + formatMillimeter(precip) + "\n";
-                resultStrs[i]+= "Total accumulated precipitation from start date of the requested period = " + formatMillimeter(accPrecip) + "\n";
-                resultStrs[i]+= "Total accumulated precipitation for the same date range in the prior year = " + formatMillimeter(accPrecipPriorYear) + "\n";
-                resultStrs[i]+= "Avg. total accumulated precipitation for the same date range over prior 3 years = " + formatMillimeter(accPrecip3YearAverage) + "\n";
-                resultStrs[i]+= "Avg. total accumulated precipitation for the input date range over [up to] the past 10 years = " + formatMillimeter(accPrecipLongTermAverage) + "\n";
-                resultStrs[i]+= "Summation of total solar energy received during day = " + formatWattHours(solar) + "\n";
-                resultStrs[i]+= "Lowest % relative humidity recorded for day = " + formatPercentage(minHumidity) + "\n";
-                resultStrs[i]+= "Highest % relative humidity recorded for day = " + formatPercentage(maxHumidity) + "\n";
-                resultStrs[i]+= "Morning’s highest wind speed = " + formatMeterPerSecond(mornWind) + "\n";
-                resultStrs[i]+= "Day’s highest wind speed = " + formatMeterPerSecond(maxWind) + "\n";
-                resultStrs[i]+= "Growing Degree Days (# of heat units achieved per day) = " + Math.round(gdd) + "\n";
-                resultStrs[i]+= "Total accumulated GDDs from start date of the requested period = " + Math.round(accGdd) + "\n";
-                resultStrs[i]+= "Total accumulated GDDs for the same date range in the prior year = " + Math.round(accGddPriorYear) + "\n";
-                resultStrs[i]+= "Avg. total accumulated GDDs for the same date range over the prior 3 years = " + Math.round(accGdd3YearAverage) + "\n";
-                resultStrs[i]+= "Avg. total accumulated GDDs for the input date range over [up to] the past 10 years = " + Math.round(accGddLongTermAverage) + "\n";
-                resultStrs[i]+= "Potential Evapotranspiration for each day = " + formatMillimeter(pet) + "\n";
-                resultStrs[i]+= "Accumulated PET from the start date to each day in the date range = " + formatMillimeter(accPet) + "\n";
-                resultStrs[i]+= "P/PET or Precipitation over PET, for determining potential crop water stress = " + ppet;
+//                resultStrs[i] = "Date = " + date + "\n";
+//                resultStrs[i]+= "Max/Min Temperature = " + formatMaxMinTemp(maxTemperature, minTemperature) + "\n";
+//                resultStrs[i]+= "Precipitation = " + formatMillimeter(precip) + "\n";
+//                resultStrs[i]+= "Total accumulated precipitation from start date of the requested period = " + formatMillimeter(accPrecip) + "\n";
+//                resultStrs[i]+= "Total accumulated precipitation for the same date range in the prior year = " + formatMillimeter(accPrecipPriorYear) + "\n";
+//                resultStrs[i]+= "Avg. total accumulated precipitation for the same date range over prior 3 years = " + formatMillimeter(accPrecip3YearAverage) + "\n";
+//                resultStrs[i]+= "Avg. total accumulated precipitation for the input date range over [up to] the past 10 years = " + formatMillimeter(accPrecipLongTermAverage) + "\n";
+//                resultStrs[i]+= "Summation of total solar energy received during day = " + formatWattHours(solar) + "\n";
+//                resultStrs[i]+= "Lowest % relative humidity recorded for day = " + formatPercentage(minHumidity) + "\n";
+//                resultStrs[i]+= "Highest % relative humidity recorded for day = " + formatPercentage(maxHumidity) + "\n";
+//                resultStrs[i]+= "Morning’s highest wind speed = " + formatMeterPerSecond(mornWind) + "\n";
+//                resultStrs[i]+= "Day’s highest wind speed = " + formatMeterPerSecond(maxWind) + "\n";
+//                resultStrs[i]+= "Growing Degree Days (# of heat units achieved per day) = " + Math.round(gdd) + "\n";
+//                resultStrs[i]+= "Total accumulated GDDs from start date of the requested period = " + Math.round(accGdd) + "\n";
+//                resultStrs[i]+= "Total accumulated GDDs for the same date range in the prior year = " + Math.round(accGddPriorYear) + "\n";
+//                resultStrs[i]+= "Avg. total accumulated GDDs for the same date range over the prior 3 years = " + Math.round(accGdd3YearAverage) + "\n";
+//                resultStrs[i]+= "Avg. total accumulated GDDs for the input date range over [up to] the past 10 years = " + Math.round(accGddLongTermAverage) + "\n";
+//                resultStrs[i]+= "Potential Evapotranspiration for each day = " + formatMillimeter(pet) + "\n";
+//                resultStrs[i]+= "Accumulated PET from the start date to each day in the date range = " + formatMillimeter(accPet) + "\n";
+//                resultStrs[i]+= "P/PET or Precipitation over PET, for determining potential crop water stress = " + ppet;
 
                 cVVector.add(resultValues);
 
@@ -364,6 +298,8 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
                         } else {
                             Log.v(LOG_TAG, "Query failed! :( **********");
                         }
+
+                        weatherCursor.close();
                     }
                 }
 
@@ -374,7 +310,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
             }
         }
 
-        return resultStrs;
+        return;
 
     }
 
@@ -488,7 +424,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
         return null;
     }
 
-    private String[] getDataFromAPI(String latitude, String longitude, String startDate, String token) {
+    private boolean getDataFromAPI(String latitude, String longitude, String startDate, String token) {
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
         HttpURLConnection urlConnection = null;
@@ -546,9 +482,8 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
 
             if (responseCode != 200) {
                 // Authorization token invalid
-                String[] results = {"-1"};
                 Log.v(LOG_TAG, "Respond Code is " + responseCode + " - " + responseMessage);
-                return results;
+                return false;
             }
 
             // Read the input stream into a String
@@ -556,7 +491,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
                 // Nothing to do.
-                return null;
+                return false;
             }
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -570,7 +505,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
-                return null;
+                return false;
             }
             forecastJsonStr = buffer.toString();
             Log.v(LOG_TAG, "Response from server received!");
@@ -578,7 +513,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
-            return null;
+            return false;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -593,13 +528,14 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
         }
 
         try {
-            return getWeatherDataFromJson(forecastJsonStr, locationID);
+            getWeatherDataFromJson(forecastJsonStr, locationID);
+            return true;
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
         // This will only happen if there was an error getting or parsing the forecast.
-        return null;
+        return false;
     }
 
     @Override
@@ -624,15 +560,13 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
         }
 
         // Params: latitude, longitude, startdate, token
-        String[] results = getDataFromAPI(params[0], params[1], params[2], oauthToken);
+        boolean result = getDataFromAPI(params[0], params[1], params[2], oauthToken);
 
-        if (results == null) {
-            return null;
-        } else if (results[0] == "-1") { // some error code returned
+        if (!result) { // some error code returned from API
             // When the token has expired and we get exception from getDataFromAPI method
             oauthToken = getOAuthToken();
             Log.v(LOG_TAG, "Token has expired, new token is = " + oauthToken);
-            results = getDataFromAPI(params[0], params[1], params[2], oauthToken);
+            getDataFromAPI(params[0], params[1], params[2], oauthToken);
         } else {
             Log.v(LOG_TAG, "Using same token = " + oauthToken);
         }
