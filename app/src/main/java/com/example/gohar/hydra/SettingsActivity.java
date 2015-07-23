@@ -55,9 +55,10 @@ public class SettingsActivity extends PreferenceActivity
         if ( !mBindingPreference ) {
             if (preference.getKey().equals(getString(R.string.pref_location_latitude_key))
                     || preference.getKey().equals((getString(R.string.pref_location_longitude_key)))) {
-                FetchResultsTask resultsTask = new FetchResultsTask(this);
-                String location = value.toString();
-                resultsTask.execute(location);
+                String[] location = Utility.getPrefferedLocation(this);
+                String currentDate = Utility.getCurrentDate();
+                FetchResultsTask fetchResultsTask = new FetchResultsTask(this);
+                fetchResultsTask.execute(location[0], location[1], currentDate);
             } else {
                 // notify code that weather may be impacted
                 getContentResolver().notifyChange(ResultContract.ResultEntry.CONTENT_URI, null);

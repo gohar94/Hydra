@@ -8,7 +8,6 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.gohar.hydra.data.Constants;
 import com.example.gohar.hydra.data.ResultContract;
@@ -377,6 +376,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
                 // Nothing to do.
+                Log.e(LOG_TAG, "input stream null");
                 return null;
             }
             reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -391,6 +391,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
+                Log.e(LOG_TAG, "buffer length 0");
                 return null;
             }
             oauthTokenJsonStr = buffer.toString();
@@ -543,6 +544,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
 
         // If there's no zip code, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
+            Log.e(LOG_TAG, "params 0");
             return null;
         }
 
@@ -552,7 +554,6 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
             if (oauthToken == null) {
                 // Could not obtain oauth token
                 Log.e(LOG_TAG, "Could not obtain token");
-                Toast.makeText(mContext, R.string.toast_error_connection, Toast.LENGTH_SHORT).show();
                 return null;
             }
 

@@ -70,7 +70,6 @@ public class DetailActivity extends ActionBarActivity {
         private static final String LONGITUDE_KEY = "longitude";
         private String mLatitude;
         private String mLongitude;
-        private String mResult;
         private ShareActionProvider mShareActionProvider;
 
         String[] DETAILS_COLUMNS = {
@@ -127,18 +126,12 @@ public class DetailActivity extends ActionBarActivity {
             if (mLatitude != null &&
                     !mLatitude.equals(Utility.getPrefferedLocation(getActivity())[0])) {
                 getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+                Log.v(LOG_TAG, "changed latitude");
             } else if (mLongitude != null &&
                     !mLongitude.equals(Utility.getPrefferedLocation(getActivity())[1])) {
                 getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+                Log.v(LOG_TAG, "changed longitude");
             }
-        }
-
-        private Intent createShareForecastIntent() {
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, mResult + DETAIL_SHARE_HASHTAG);
-            return shareIntent;
         }
 
         @Override
@@ -155,8 +148,7 @@ public class DetailActivity extends ActionBarActivity {
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             Log.v(LOG_TAG, "In onLoadFinished");
-            if (!data.moveToFirst()) { return;
-            }
+            if (!data.moveToFirst()) { return; }
 
             String dateString = data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_DATE));
             ((TextView) getView().findViewById(R.id.detail_date_textview))
@@ -171,13 +163,13 @@ public class DetailActivity extends ActionBarActivity {
                     .setText(minTemperature);
 
             // We still need this for the share intent
-            mResult = String.format("%s - %s/%s", dateString, maxTemperature, minTemperature);
+            resultString = String.format("%s - %s/%s", dateString, maxTemperature, minTemperature);
 
-            Log.v(LOG_TAG, "Forecast String: " + mResult);
+            Log.v(LOG_TAG, "Forecast String: " + resultString);
 
             // If onCreateOptionsMenu has already happened, we need to update the share intent now.
             if (mShareActionProvider != null) {
-                mShareActionProvider.setShareIntent(createShareForecastIntent());
+                mShareActionProvider.setShareIntent(createShareDetailIntent());
             }
         }
 
@@ -211,7 +203,7 @@ public class DetailActivity extends ActionBarActivity {
             MenuItem menuItem = menu.findItem(R.id.action_share);
 
             // Get the provider and hold onto it to set/change the share intent.
-            ShareActionProvider mShareActionProvider =
+            mShareActionProvider =
                     (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
             // Attach an intent to this ShareActionProvider.  You can update this at any time,

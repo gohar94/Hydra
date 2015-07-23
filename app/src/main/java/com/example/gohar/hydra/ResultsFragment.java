@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 
 import com.example.gohar.hydra.data.ResultContract;
 
@@ -33,7 +32,7 @@ public class ResultsFragment extends Fragment implements LoaderManager.LoaderCal
 
     private final String LOG_TAG = ResultsFragment.class.getSimpleName();
 
-    private SimpleCursorAdapter resultsAdapter;
+    private ResultAdapter resultsAdapter;
 
     private static final int FORECAST_LOADER = 0;
     private String mLatitude;
@@ -118,39 +117,18 @@ public class ResultsFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        updateResults();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // The SimpleCursorAdapter will take data from the database through the
-        // Loader and use it to populate the ListView it's attached to.
-        resultsAdapter = new SimpleCursorAdapter(
-                getActivity(),
-                R.layout.list_item_results,
-                null,
-                // the column names to use to fill the textviews
-                new String[]{ResultContract.ResultEntry.COLUMN_DATE,
-                },
-                // the textviews to fill with the data pulled from the columns above
-                new int[]{R.id.list_item_date_textview,
-                },
-                0
-        );
-
-        resultsAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                switch (columnIndex) {
-                    case COL_RESULT_DATE: {
-                        String dateString = cursor.getString(columnIndex);
-                        dateString = dateString.split("T")[0]; // showing only date, not time
-                        TextView dateView = (TextView) view;
-                        dateView.setText(dateString);
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
+        // The ArrayAdapter will take data from a source and
+        // use it to populate the ListView it's attached to.
+        resultsAdapter = new ResultAdapter(getActivity(), null, 0);
 
         // Get a reference to the ListView, and attach this adapter to it.
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
@@ -160,7 +138,7 @@ public class ResultsFragment extends Fragment implements LoaderManager.LoaderCal
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Cursor cursor = resultsAdapter.getCursor();
+                Cursor cursor = ((SimpleCursorAdapter) adapterView.getAdapter()).getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
                     Intent intent = new Intent(getActivity(), DetailActivity.class)
                             .putExtra(DetailActivity.DATE_KEY, cursor.getString(COL_RESULT_DATE));
