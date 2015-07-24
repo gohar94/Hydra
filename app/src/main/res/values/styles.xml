@@ -1,12 +1,33 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-    </style>
     <style name="splashScreenTheme"
-        parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+        parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@mipmap/splash_screen</item>
     </style>
+
+        <!-- Base application theme. -->
+        <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+            <item name="actionBarStyle">@style/ActionBar.Solid.Hydra</item>
+        </style>
+
+        <style name="ForecastTheme" parent="AppTheme">
+            <item name="actionBarStyle">@style/ActionBar.Solid.Hydra.NoTitle</item>
+        </style>
+
+        <style name="ActionBar.Solid.Hydra"
+            parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+            <item name="background">@color/HydraActionBar</item>
+        </style>
+
+        <style name="ActionBar.Solid.Hydra.NoTitle" parent="@style/ActionBar.Solid.Hydra">
+            <item name="displayOptions">useLogo|showHome</item>
+            <item name="logo">@drawable/ic_logo</item>
+        </style>
+
+        <style name="ForecastListStyle">
+            <!-- Here it's a stub.  In screens of sufficient width, this style includes modifications
+            for two-pane layout -->
+        </style>
+
 
 </resources>

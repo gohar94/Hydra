@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import com.example.gohar.hydra.data.ResultContract;
 
@@ -45,6 +44,7 @@ public class ResultsFragment extends Fragment implements LoaderManager.LoaderCal
             ResultContract.ResultEntry.COLUMN_DATE,
             ResultContract.ResultEntry.COLUMN_MAX_TEMP,
             ResultContract.ResultEntry.COLUMN_MIN_TEMP,
+            ResultContract.ResultEntry.COLUMN_CONDITIONS_COND_CODE,
             ResultContract.LocationEntry.COLUMN_LATITUDE,
             ResultContract.LocationEntry.COLUMN_LONGITUDE
     };
@@ -55,8 +55,9 @@ public class ResultsFragment extends Fragment implements LoaderManager.LoaderCal
     public static final int COL_RESULT_DATE = 1;
     public static final int COL_RESULT_MAX_TEMP = 2;
     public static final int COL_RESULT_MIN_TEMP = 3;
-    public static final int COL_LATITUDE = 4;
-    public static final int COL_LONGITUDE = 5;
+    public static final int COL_RESULT_CONDITIONS_COND_CODE = 4;
+    public static final int COL_LATITUDE = 5;
+    public static final int COL_LONGITUDE = 6;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -138,7 +139,7 @@ public class ResultsFragment extends Fragment implements LoaderManager.LoaderCal
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Cursor cursor = ((SimpleCursorAdapter) adapterView.getAdapter()).getCursor();
+                Cursor cursor = resultsAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
                     Intent intent = new Intent(getActivity(), DetailActivity.class)
                             .putExtra(DetailActivity.DATE_KEY, cursor.getString(COL_RESULT_DATE));

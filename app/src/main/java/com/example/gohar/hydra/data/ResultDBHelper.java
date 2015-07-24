@@ -33,6 +33,8 @@ public class ResultDBHelper extends SQLiteOpenHelper {
                 // the ID of the location entry associated with this weather data
                 ResultContract.ResultEntry.COLUMN_LOC_KEY + " INTEGER NOT NULL, " +
                 ResultContract.ResultEntry.COLUMN_DATE + " TEXT NOT NULL, " +
+                ResultContract.ResultEntry.COLUMN_CONDITIONS_COND_TEXT + " TEXT, " +
+                ResultContract.ResultEntry.COLUMN_CONDITIONS_COND_CODE + " TEXT, " +
 
                 ResultContract.ResultEntry.COLUMN_MIN_TEMP + " REAL, " +
                 ResultContract.ResultEntry.COLUMN_MAX_TEMP + " REAL, " +

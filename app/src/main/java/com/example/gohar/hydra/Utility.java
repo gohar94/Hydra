@@ -3,6 +3,7 @@ package com.example.gohar.hydra;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.example.gohar.hydra.data.ResultContract;
 
@@ -15,6 +16,8 @@ import java.util.Date;
  * Created by goharirfan on 7/22/15.
  */
 public class Utility {
+
+    private static final String LOG_TAG = Utility.class.getSimpleName();
 
     // outputs a string array with {latitude, longitude}
     public static String[] getPrefferedLocation(Context context) {
@@ -214,5 +217,42 @@ public class Utility {
             e.printStackTrace();
             return null;
         }
+    }
+
+    // TODO consult hydra team
+    public static int getIconResourceForWeatherCondition(String conditionCode, boolean isColored) {
+        if (conditionCode == null || conditionCode.equals("null") || conditionCode.equals("") || conditionCode.length() == 0) {
+            Log.v(LOG_TAG, "Using default image");
+            return R.drawable.art_clear; // TODO default image should be changed maybe?
+        }
+        char code1 = conditionCode.charAt(0);
+        char code2 = conditionCode.charAt(1);
+        char code3 = conditionCode.charAt(2); // wind not being user right now
+
+        if (code1 == '1' || code1 == '2' || code1 == '6' || code1 == '7') {
+            if (isColored)
+                return R.drawable.art_clear;
+            else
+                return R.drawable.ic_clear;
+        } else if (code1 == '3' || code1 == '4' || code1 == '5' || code1 == '8' || code1 == '9' || code1 == 'A') {
+            if (code2 == '1') {
+                if (isColored)
+                    return R.drawable.art_clouds;
+                else
+                    return R.drawable.ic_cloudy;
+            } else if (code2 == '2' || code2 == '3') {
+                if (isColored)
+                    return R.drawable.art_rain;
+                else
+                    return R.drawable.ic_rain;
+            } else {
+                if (isColored)
+                    return R.drawable.art_storm;
+                else
+                    return R.drawable.ic_storm;
+            }
+        }
+
+        return R.drawable.art_clear;
     }
 }

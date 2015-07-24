@@ -14,6 +14,8 @@ public class Constants {
     // for the response json object
     public static final String DAILY_ATTRIBUTES = "dailyAttributes";
     public static final String DATE = "date";
+    public static final String CONDITIONS_COND_CODE = "condCode";
+    public static final String CONDITIONS_COND_TEXT = "condText";
 
     // for the request parameter
     public static final String ATTRIBUTE = "attribute";
@@ -40,4 +42,11 @@ public class Constants {
     public static final String PET = "pet";
     public static final String ACC_PET = "accPet";
     public static final String PPET = "ppet";
+    public static final String CONDITIONS = "conditions";
+    public static final String INTERVALS = "intervals";
+    public static final String INTERVALS_VALUE = "1";
+    public static final String CONDITIONS_TYPE = "conditionsType";
+    public static final String CONDITIONS_TYPE_VALUE = "standard";
+    public static final String UTC_OFFSET = "utcOffset";
+    public static final String UTC_OFFSET_VALUE = "+5:00:00";
 }

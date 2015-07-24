@@ -76,7 +76,8 @@ public class MainActivity extends ActionBarActivity {
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         } else {
-            // TODO toast here
+            // TODO check if this toast works
+            Toast.makeText(this, R.string.toast_error_no_map, Toast.LENGTH_SHORT).show();
             Log.d(LOG_TAG, "Couldn't call map, no receiving apps installed!");
         }
     }

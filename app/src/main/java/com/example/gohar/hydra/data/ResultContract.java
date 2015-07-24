@@ -78,6 +78,9 @@ public class ResultContract {
         // Date, stored as Text with format yyyy-MM-dd
         public static final String COLUMN_DATE = Constants.DATE;
 
+        public static final String COLUMN_CONDITIONS_COND_CODE = Constants.CONDITIONS_COND_CODE;
+        public static final String COLUMN_CONDITIONS_COND_TEXT = Constants.CONDITIONS_COND_TEXT;
+
         // Min and max temperatures for the day (stored as floats)
         public static final String COLUMN_MIN_TEMP = Constants.MIN_TEMPERATURE;
         public static final String COLUMN_MAX_TEMP = Constants.MAX_TEMPERATURE;

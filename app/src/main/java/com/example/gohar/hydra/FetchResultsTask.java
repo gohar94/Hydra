@@ -37,7 +37,7 @@ import java.util.Vector;
 public class FetchResultsTask extends AsyncTask<String, Void, Void> {
 
     private final String LOG_TAG = FetchResultsTask.class.getSimpleName();
-    private boolean DEBUG = true;
+    private boolean DEBUG = false;
     // only contains the dates
 //    private ArrayAdapter<String> resultsAdapter;
     private final Context mContext;
@@ -130,6 +130,8 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
             Double pet = Double.NaN;
             Double accPet = Double.NaN;
             Double ppet = Double.NaN;
+            String cond_type = "";
+            String cond_text = "";
 
             // Get the JSON object representing the day
             JSONObject result = resultsArray.getJSONObject(i);
@@ -243,6 +245,47 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
                 if (result.has(Constants.DATE) && result.getString(Constants.DATE) != "null") {
                     date = result.getString(Constants.DATE);
                     resultValues.put(Constants.DATE, date);
+                }
+
+                boolean parseConditions = false;
+                if (result.has(Constants.CONDITIONS)) {
+                    JSONArray conditionsArray = result.getJSONArray(Constants.CONDITIONS);
+
+                    if (conditionsArray.length() == 0) {
+                        i++;
+                        if (i < resultsArray.length()) {
+                            result = resultsArray.getJSONObject(i);
+                            if (result.has(Constants.DAILY_ATTRIBUTES)) {
+                                i--;
+                            } else {
+                                parseConditions = true;
+                            }
+                        } else {
+                            i--;
+                        }
+                    } else {
+                        parseConditions = true;
+                    }
+
+                    if (parseConditions == true) {
+                        conditionsArray = result.getJSONArray(Constants.CONDITIONS);
+                        Log.e(LOG_TAG, "parsing conditions");
+                        Log.v(LOG_TAG, "conditions length " + conditionsArray.length());
+
+                        for (int j = 0; j < conditionsArray.length(); j++) {
+                            JSONObject conditions = conditionsArray.getJSONObject(j);
+                            if (conditions.has(Constants.CONDITIONS_COND_CODE) && conditions.getString(Constants.CONDITIONS_COND_CODE) != "null") {
+                                cond_type = conditions.getString(Constants.CONDITIONS_COND_CODE);
+                                resultValues.put(Constants.CONDITIONS_COND_CODE, cond_type);
+                                Log.v(LOG_TAG, "inserting conditions code " + cond_type);
+                            }
+
+                            if (conditions.has(Constants.CONDITIONS_COND_TEXT) && conditions.getString(Constants.CONDITIONS_COND_TEXT) != "null") {
+                                cond_text = conditions.getString(Constants.CONDITIONS_COND_TEXT);
+                                resultValues.put(Constants.CONDITIONS_COND_TEXT, cond_text);
+                            }
+                        }
+                    }
                 }
 
                 // formatting the variables for presentation and appending to string
@@ -465,6 +508,10 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
                     .appendQueryParameter(Constants.ATTRIBUTE, Constants.PET)
                     .appendQueryParameter(Constants.ATTRIBUTE, Constants.ACC_PET)
                     .appendQueryParameter(Constants.ATTRIBUTE, Constants.PPET)
+                    .appendQueryParameter(Constants.ATTRIBUTE, Constants.CONDITIONS)
+                    .appendQueryParameter(Constants.INTERVALS, Constants.INTERVALS_VALUE)
+                    .appendQueryParameter(Constants.CONDITIONS_TYPE, Constants.CONDITIONS_TYPE_VALUE)
+                    .appendQueryParameter(Constants.UTC_OFFSET, Constants.UTC_OFFSET_VALUE)
                     .build();
 
             URL url = new URL(builtUri.toString());
@@ -529,6 +576,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
         }
 
         try {
+            Log.v(LOG_TAG, "response = " + forecastJsonStr);
             getWeatherDataFromJson(forecastJsonStr, locationID);
             return true;
         } catch (JSONException e) {
