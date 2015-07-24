@@ -35,6 +35,12 @@ public class Utility {
         return plantDate;
     }
 
+    public static Double getSoilMoisture(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String moisture = prefs.getString(context.getString(R.string.pref_soil_moisture), "20");
+        return new Double(moisture);
+    }
+
     public static String getCurrentDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = sdf.format(new Date());

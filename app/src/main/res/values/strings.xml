@@ -31,6 +31,7 @@
     <string name="pref_location_latitude_default" translatable="false">31.549721</string>
 
     <string name="pref_plant_date">plantDate</string>
+    <string name="pref_soil_moisture">soilMoisture</string>
 
     <!-- Default value for longitude of location preference [CHAR LIMIT = NONE] -->
     <string name="pref_location_longitude_default" translatable="false">74.343613</string>
@@ -89,5 +90,7 @@
     <string name="detail_pet_textview">Potential Evapotranspiration</string>
     <string name="detail_accPet_textview">Accumulative Evapotranspiration</string>
     <string name="detail_ppet_textview">Precipitation/ Potential Evapotranspiration</string>
+    <string name="detail_etc_textview">ETC</string>
+    <string name="detail_kc_textview">KC</string>
 
 </resources>

@@ -57,6 +57,8 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
             ResultContract.ResultEntry.COLUMN_PET,
             ResultContract.ResultEntry.COLUMN_ACC_PET,
             ResultContract.ResultEntry.COLUMN_PPET,
+            ResultContract.ResultEntry.COLUMN_KC,
+            ResultContract.ResultEntry.COLUMN_ETC,
             ResultContract.ResultEntry.COLUMN_CONDITIONS_COND_CODE,
             ResultContract.ResultEntry.COLUMN_CONDITIONS_COND_TEXT,
             ResultContract.LocationEntry.COLUMN_LATITUDE,
@@ -157,11 +159,16 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
     private TextView mPet;
     private TextView mAccPet;
     private TextView mPpet;
+    private TextView mEtc;
+    private TextView mKc;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
         mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
         mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
         mFriendlyDateView = (TextView) rootView.findViewById(R.id.detail_day_textview);
@@ -186,6 +193,8 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
         mPet = (TextView) rootView.findViewById(R.id.detail_pet_textview);
         mAccPet = (TextView) rootView.findViewById(R.id.detail_accPet_textview);
         mPpet = (TextView) rootView.findViewById(R.id.detail_ppet_textview);
+        mKc = (TextView) rootView.findViewById(R.id.detail_kc_textview);
+        mEtc = (TextView) rootView.findViewById(R.id.detail_etc_textview);
 
         return rootView;
     }
@@ -247,6 +256,24 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
         mPet.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_PET)));
         mAccPet.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PET)));
         mPpet.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_PPET)));
+
+        // CALCULATIONS
+        Double kc = new Double(0);
+        Double gdd = data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD));
+        Double pet = data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_PET));
+
+        if (gdd != null && pet != null) {
+            if (gdd >= 0 && gdd <= 1593) {
+                kc = (0.0005336 * gdd) + 0.3;
+            } else if (gdd > 1593 && gdd <= 1825) {
+                kc = 1.15;
+            } else {
+                kc = 2.95 - (0.00098425 * gdd);
+            }
+            Double etc = pet*kc;
+            mKc.setText(kc.toString());
+            mEtc.setText(etc.toString());
+        }
 
         // We still need this for the share intent
         resultString = String.format("%s\n %s - %s/%s", dateString, description, Utility.formatTemp(maxTemperature), Utility.formatTemp(minTemperature));

@@ -288,28 +288,6 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
                     }
                 }
 
-                // formatting the variables for presentation and appending to string
-//                resultStrs[i] = "Date = " + date + "\n";
-//                resultStrs[i]+= "Max/Min Temperature = " + formatMaxMinTemp(maxTemperature, minTemperature) + "\n";
-//                resultStrs[i]+= "Precipitation = " + formatMillimeter(precip) + "\n";
-//                resultStrs[i]+= "Total accumulated precipitation from start date of the requested period = " + formatMillimeter(accPrecip) + "\n";
-//                resultStrs[i]+= "Total accumulated precipitation for the same date range in the prior year = " + formatMillimeter(accPrecipPriorYear) + "\n";
-//                resultStrs[i]+= "Avg. total accumulated precipitation for the same date range over prior 3 years = " + formatMillimeter(accPrecip3YearAverage) + "\n";
-//                resultStrs[i]+= "Avg. total accumulated precipitation for the input date range over [up to] the past 10 years = " + formatMillimeter(accPrecipLongTermAverage) + "\n";
-//                resultStrs[i]+= "Summation of total solar energy received during day = " + formatWattHours(solar) + "\n";
-//                resultStrs[i]+= "Lowest % relative humidity recorded for day = " + formatPercentage(minHumidity) + "\n";
-//                resultStrs[i]+= "Highest % relative humidity recorded for day = " + formatPercentage(maxHumidity) + "\n";
-//                resultStrs[i]+= "Morning’s highest wind speed = " + formatMeterPerSecond(mornWind) + "\n";
-//                resultStrs[i]+= "Day’s highest wind speed = " + formatMeterPerSecond(maxWind) + "\n";
-//                resultStrs[i]+= "Growing Degree Days (# of heat units achieved per day) = " + Math.round(gdd) + "\n";
-//                resultStrs[i]+= "Total accumulated GDDs from start date of the requested period = " + Math.round(accGdd) + "\n";
-//                resultStrs[i]+= "Total accumulated GDDs for the same date range in the prior year = " + Math.round(accGddPriorYear) + "\n";
-//                resultStrs[i]+= "Avg. total accumulated GDDs for the same date range over the prior 3 years = " + Math.round(accGdd3YearAverage) + "\n";
-//                resultStrs[i]+= "Avg. total accumulated GDDs for the input date range over [up to] the past 10 years = " + Math.round(accGddLongTermAverage) + "\n";
-//                resultStrs[i]+= "Potential Evapotranspiration for each day = " + formatMillimeter(pet) + "\n";
-//                resultStrs[i]+= "Accumulated PET from the start date to each day in the date range = " + formatMillimeter(accPet) + "\n";
-//                resultStrs[i]+= "P/PET or Precipitation over PET, for determining potential crop water stress = " + ppet;
-
                 cVVector.add(resultValues);
 
                 if (cVVector.size() > 0) {

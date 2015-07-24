@@ -49,4 +49,8 @@ public class Constants {
     public static final String CONDITIONS_TYPE_VALUE = "standard";
     public static final String UTC_OFFSET = "utcOffset";
     public static final String UTC_OFFSET_VALUE = "+5:00:00";
+
+    // custom
+    public static final String KC = "kc";
+    public static final String ETC = "etc";
 }

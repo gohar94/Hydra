@@ -120,6 +120,9 @@ public class ResultContract {
         public static final String COLUMN_PET = Constants.PET;
         public static final String COLUMN_ACC_PET = Constants.ACC_PET;
 
+        public static final String COLUMN_KC = Constants.KC;
+        public static final String COLUMN_ETC = Constants.ETC;
+
         // This is a ratio
         public static final String COLUMN_PPET = Constants.PPET;
 

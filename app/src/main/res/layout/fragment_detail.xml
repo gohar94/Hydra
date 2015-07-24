@@ -373,5 +373,36 @@
             android:layout_height="wrap_content"
             />
 
+        <TextView
+            android:id="@+id/detail_etc_title"
+            android:text="@string/detail_etc_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceMedium"/>
+
+        <TextView
+            android:id="@+id/detail_etc_textview"
+            android:text="n/a"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/detail_kc_title"
+            android:text="@string/detail_kc_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceMedium"/>
+
+        <TextView
+            android:id="@+id/detail_kc_textview"
+            android:text="n/a"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
     </LinearLayout>
+
 </ScrollView>
