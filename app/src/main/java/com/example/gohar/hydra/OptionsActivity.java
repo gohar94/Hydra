@@ -66,8 +66,7 @@ public class OptionsActivity extends ActionBarActivity {
 
             @Override
             public void onClick(View arg0) {
-                // \n is for new line
-                Toast.makeText(getApplicationContext(), getString(R.string.toast_long_press_map), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.toast_long_press_map), Toast.LENGTH_LONG).show();
                 Intent i=new Intent(getBaseContext(), MapsActivity.class);
                 startActivity(i);
             }

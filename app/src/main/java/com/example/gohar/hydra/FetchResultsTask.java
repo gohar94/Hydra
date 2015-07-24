@@ -288,28 +288,6 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
                     }
                 }
 
-                // formatting the variables for presentation and appending to string
-//                resultStrs[i] = "Date = " + date + "\n";
-//                resultStrs[i]+= "Max/Min Temperature = " + formatMaxMinTemp(maxTemperature, minTemperature) + "\n";
-//                resultStrs[i]+= "Precipitation = " + formatMillimeter(precip) + "\n";
-//                resultStrs[i]+= "Total accumulated precipitation from start date of the requested period = " + formatMillimeter(accPrecip) + "\n";
-//                resultStrs[i]+= "Total accumulated precipitation for the same date range in the prior year = " + formatMillimeter(accPrecipPriorYear) + "\n";
-//                resultStrs[i]+= "Avg. total accumulated precipitation for the same date range over prior 3 years = " + formatMillimeter(accPrecip3YearAverage) + "\n";
-//                resultStrs[i]+= "Avg. total accumulated precipitation for the input date range over [up to] the past 10 years = " + formatMillimeter(accPrecipLongTermAverage) + "\n";
-//                resultStrs[i]+= "Summation of total solar energy received during day = " + formatWattHours(solar) + "\n";
-//                resultStrs[i]+= "Lowest % relative humidity recorded for day = " + formatPercentage(minHumidity) + "\n";
-//                resultStrs[i]+= "Highest % relative humidity recorded for day = " + formatPercentage(maxHumidity) + "\n";
-//                resultStrs[i]+= "Morning’s highest wind speed = " + formatMeterPerSecond(mornWind) + "\n";
-//                resultStrs[i]+= "Day’s highest wind speed = " + formatMeterPerSecond(maxWind) + "\n";
-//                resultStrs[i]+= "Growing Degree Days (# of heat units achieved per day) = " + Math.round(gdd) + "\n";
-//                resultStrs[i]+= "Total accumulated GDDs from start date of the requested period = " + Math.round(accGdd) + "\n";
-//                resultStrs[i]+= "Total accumulated GDDs for the same date range in the prior year = " + Math.round(accGddPriorYear) + "\n";
-//                resultStrs[i]+= "Avg. total accumulated GDDs for the same date range over the prior 3 years = " + Math.round(accGdd3YearAverage) + "\n";
-//                resultStrs[i]+= "Avg. total accumulated GDDs for the input date range over [up to] the past 10 years = " + Math.round(accGddLongTermAverage) + "\n";
-//                resultStrs[i]+= "Potential Evapotranspiration for each day = " + formatMillimeter(pet) + "\n";
-//                resultStrs[i]+= "Accumulated PET from the start date to each day in the date range = " + formatMillimeter(accPet) + "\n";
-//                resultStrs[i]+= "P/PET or Precipitation over PET, for determining potential crop water stress = " + ppet;
-
                 cVVector.add(resultValues);
 
                 if (cVVector.size() > 0) {
@@ -468,7 +446,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
         return null;
     }
 
-    private boolean getDataFromAPI(String latitude, String longitude, String startDate, String token) {
+    private boolean getDataFromAPI(String latitude, String longitude, String startDate, String plantDate, String token) {
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
         HttpURLConnection urlConnection = null;
@@ -488,6 +466,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
                     .appendQueryParameter(Constants.LATITUDE, latitude)
                     .appendQueryParameter(Constants.LONGITUDE, longitude)
                     .appendQueryParameter(Constants.START_DATE, startDate)
+                    .appendQueryParameter(Constants.PLANT_DATE, plantDate)
                     .appendQueryParameter(Constants.ATTRIBUTE, Constants.MIN_TEMPERATURE)
                     .appendQueryParameter(Constants.ATTRIBUTE, Constants.MAX_TEMPERATURE)
                     .appendQueryParameter(Constants.ATTRIBUTE, Constants.PRECIP)
@@ -608,14 +587,14 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
             Log.v(LOG_TAG, "No existing token was present, new token is = " + oauthToken);
         }
 
-        // Params: latitude, longitude, startdate, token
-        boolean result = getDataFromAPI(params[0], params[1], params[2], oauthToken);
+        // Params: latitude, longitude, startdate, plantdate, token
+        boolean result = getDataFromAPI(params[0], params[1], params[2], params[3], oauthToken);
 
         if (!result) { // some error code returned from API
             // When the token has expired and we get exception from getDataFromAPI method
             oauthToken = getOAuthToken();
             Log.v(LOG_TAG, "Token has expired, new token is = " + oauthToken);
-            getDataFromAPI(params[0], params[1], params[2], oauthToken);
+            getDataFromAPI(params[0], params[1], params[2], params[3], oauthToken);
         } else {
             Log.v(LOG_TAG, "Using same token = " + oauthToken);
         }

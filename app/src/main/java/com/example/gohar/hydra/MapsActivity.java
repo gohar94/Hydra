@@ -50,10 +50,10 @@ public class MapsActivity extends FragmentActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MapsActivity.this);
                         SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("latitude", Double.toString(point.latitude));
-                        editor.putString("longitude", String.valueOf(point.longitude));
+                        editor.putString(getString(R.string.pref_location_latitude_key), Double.toString(point.latitude));
+                        editor.putString(getString(R.string.pref_location_longitude_key), String.valueOf(point.longitude));
                         editor.apply();
-                        Intent i = new Intent(getBaseContext(), MainActivity.class);
+                        Intent i = new Intent(getBaseContext(), UserInputActivity.class);
                         startActivity(i);
                     }
                 });

@@ -18,6 +18,7 @@ public class Constants {
     public static final String CONDITIONS_COND_TEXT = "condText";
 
     // for the request parameter
+    public static final String PLANT_DATE = "plantDate";
     public static final String ATTRIBUTE = "attribute";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";

@@ -30,6 +30,8 @@
     <!-- Default value for latitude of location preference [CHAR LIMIT = NONE] -->
     <string name="pref_location_latitude_default" translatable="false">31.549721</string>
 
+    <string name="pref_plant_date">plantDate</string>
+
     <!-- Default value for longitude of location preference [CHAR LIMIT = NONE] -->
     <string name="pref_location_longitude_default" translatable="false">74.343613</string>
     <string name="title_activity_options">OptionsActivity</string>
@@ -58,4 +60,11 @@
     <string name="format_full_friendly_date">
         <xliff:g id="day">%1$s</xliff:g>, <xliff:g id="date">%2$s</xliff:g>
     </string>
+    <string name="title_activity_user_input">UserInputActivity</string>
+
+    <!-- For User Input Activity -->
+    <string name="user_input_planting_date">Planting Date</string>
+    <string name="user_input_button_submit">Submit</string>
+    <string name="user_inputs">Please enter the details</string>
+
 </resources>
