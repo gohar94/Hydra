@@ -8,61 +8,37 @@
     android:id="@+id/options"
     android:orientation="vertical"
     android:weightSum="1"
-    android:background="#487385">
-
-    <ImageView
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:id="@+id/imageViewHydraLogo"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/btnShowLocation"
-        android:layout_alignStart="@+id/btnShowLocation"
-        android:layout_alignRight="@+id/btnOpenMaps"
-        android:layout_alignEnd="@+id/btnOpenMaps"
-        android:layout_above="@+id/view"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="50dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:gravity="center|bottom"
-        android:orientation="vertical">
-
-    </LinearLayout>
+    android:background="@color/White">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/list_item_date_textview"
+        android:layout_width="fill_parent"
+        android:gravity="center"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Select Your Location Option"
-        android:id="@+id/textView"
-        android:layout_above="@+id/btnOpenMaps"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_vertical"
-        />
+        android:fontFamily="sans-serif-condensed"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:text="@string/heading_choose_location"/>
 
     <Button
         android:id="@+id/btnOpenMaps"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/button_use_google_maps"
-        android:background="@color/Shine"
+        android:background="@drawable/button_map"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/btnShowLocation"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:layout_width="150dp"
+        android:layout_height="10dp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/button_use_current_location"
         android:layout_marginBottom="50dp"
-        android:background="@color/Shine"/>
+        android:background="@drawable/button_current_location"/>
 
 
 
