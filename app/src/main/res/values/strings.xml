@@ -30,6 +30,8 @@
     <!-- Default value for latitude of location preference [CHAR LIMIT = NONE] -->
     <string name="pref_location_latitude_default" translatable="false">31.549721</string>
 
+    <string name="pref_plant_date">plantDate</string>
+
     <!-- Default value for longitude of location preference [CHAR LIMIT = NONE] -->
     <string name="pref_location_longitude_default" translatable="false">74.343613</string>
     <string name="title_activity_options">OptionsActivity</string>
@@ -58,4 +60,34 @@
     <string name="format_full_friendly_date">
         <xliff:g id="day">%1$s</xliff:g>, <xliff:g id="date">%2$s</xliff:g>
     </string>
+    <string name="title_activity_user_input">UserInputActivity</string>
+
+    <!-- For User Input Activity -->
+    <string name="user_input_planting_date">Planting Date</string>
+    <string name="user_input_button_submit">Submit</string>
+    <string name="user_inputs">Please enter the details</string>
+
+    <!-- Details Activity -->
+    <string name="detail_forecast_textview"></string>
+    <string name="detail_high_textview">Maximum Temperature</string>
+    <string name="detail_low_textview">Minimum Temperature</string>
+    <string name="detail_max_humidity_textview">Maximum Humidity</string>
+    <string name="detail_min_humidity_textview">Minimum Humidity</string>
+    <string name="detail_max_wind_textview">Maximum Wind</string>
+    <string name="detail_morn_wind_textview">Morning Wind</string>
+    <string name="detail_precip_textview">Precipitation</string>
+    <string name="detail_accPrecip_textview">Accumulative Precipitation</string>
+    <string name="detail_accPrecipPriorYear_textview">Accumulative Precipitation Prior Year</string>
+    <string name="detail_accPrecip3YearAverage_textview">Accumulative Precipitation 3 Year Average</string>
+    <string name="detail_accPrecipLongTermAverage_textview">Accumulative Precipitation Long Term Average</string>
+    <string name="detail_solar_textview">Solar</string>
+    <string name="detail_gdd_textview">GDD</string>
+    <string name="detail_accGdd_textview">Accumulative GDD</string>
+    <string name="detail_accGddPriorYear_textview">Accumulative GDD Prior Year</string>
+    <string name="detail_accGdd3YearAverage_textview">Accumulative GDD 3 Year Average</string>
+    <string name="detail_accGddLongTermAverage_textview">Accumulative GDD Long Term Average</string>
+    <string name="detail_pet_textview">Potential Evapotranspiration</string>
+    <string name="detail_accPet_textview">Accumulative Evapotranspiration</string>
+    <string name="detail_ppet_textview">Precipitation/ Potential Evapotranspiration</string>
+
 </resources>

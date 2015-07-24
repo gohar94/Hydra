@@ -29,6 +29,12 @@ public class Utility {
         return new String[]{latitude, longitude};
     }
 
+    public static String getPlantDate(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String plantDate = prefs.getString(context.getString(R.string.pref_plant_date), Utility.getCurrentDate());
+        return plantDate;
+    }
+
     public static String getCurrentDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = sdf.format(new Date());

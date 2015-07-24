@@ -53,7 +53,7 @@ public class MapsActivity extends FragmentActivity {
                         editor.putString("latitude", Double.toString(point.latitude));
                         editor.putString("longitude", String.valueOf(point.longitude));
                         editor.apply();
-                        Intent i = new Intent(getBaseContext(), MainActivity.class);
+                        Intent i = new Intent(getBaseContext(), UserInputActivity.class);
                         startActivity(i);
                     }
                 });

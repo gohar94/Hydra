@@ -39,14 +39,28 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
             ResultContract.ResultEntry.COLUMN_DATE,
             ResultContract.ResultEntry.COLUMN_MAX_TEMP,
             ResultContract.ResultEntry.COLUMN_MIN_TEMP,
-            ResultContract.ResultEntry.COLUMN_MAX_HUMIDITY,
+            ResultContract.ResultEntry.COLUMN_PRECIP,
+            ResultContract.ResultEntry.COLUMN_ACC_PRECIP,
+            ResultContract.ResultEntry.COLUMN_ACC_PRECIP_PRIOR_YEAR,
+            ResultContract.ResultEntry.COLUMN_ACC_PRECIP_3_YEAR_AVERAGE,
+            ResultContract.ResultEntry.COLUMN_ACC_PRECIP_LONG_TERM_AVERAGE,
+            ResultContract.ResultEntry.COLUMN_SOLAR,
             ResultContract.ResultEntry.COLUMN_MIN_HUMIDITY,
-            ResultContract.ResultEntry.COLUMN_MAX_WIND,
+            ResultContract.ResultEntry.COLUMN_MAX_HUMIDITY,
             ResultContract.ResultEntry.COLUMN_MORN_WIND,
+            ResultContract.ResultEntry.COLUMN_MAX_WIND,
+            ResultContract.ResultEntry.COLUMN_GDD,
+            ResultContract.ResultEntry.COLUMN_ACC_GDD,
+            ResultContract.ResultEntry.COLUMN_ACC_GDD_PRIOR_YEAR,
+            ResultContract.ResultEntry.COLUMN_ACC_GDD_3_YEAR_AVERAGE,
+            ResultContract.ResultEntry.COLUMN_ACC_GDD_LONG_TERM_AVERAGE,
+            ResultContract.ResultEntry.COLUMN_PET,
+            ResultContract.ResultEntry.COLUMN_ACC_PET,
+            ResultContract.ResultEntry.COLUMN_PPET,
             ResultContract.ResultEntry.COLUMN_CONDITIONS_COND_CODE,
             ResultContract.ResultEntry.COLUMN_CONDITIONS_COND_TEXT,
             ResultContract.LocationEntry.COLUMN_LATITUDE,
-            ResultContract.LocationEntry.COLUMN_LONGITUDE,
+            ResultContract.LocationEntry.COLUMN_LONGITUDE
     };
 
 
@@ -129,6 +143,20 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
     private TextView mMaxWindView;
     private TextView mMornWindView;
     private TextView mPressureView;
+    private TextView mPrecip;
+    private TextView mAccPrecip;
+    private TextView mAccPrecipPriorYear;
+    private TextView mAccPrecip3YearAverage;
+    private TextView mAccPrecipLongTermAverage;
+    private TextView mSolar;
+    private TextView mGdd;
+    private TextView mAccGdd;
+    private TextView mAccGddPriorYear;
+    private TextView mAccGdd3YearAverage;
+    private TextView mAccGddLongTermAverage;
+    private TextView mPet;
+    private TextView mAccPet;
+    private TextView mPpet;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -144,7 +172,21 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
         mMinHumidityView = (TextView) rootView.findViewById(R.id.detail_min_humidity_textview);
         mMaxWindView = (TextView) rootView.findViewById(R.id.detail_max_wind_textview);
         mMornWindView = (TextView) rootView.findViewById(R.id.detail_morn_wind_textview);
-        mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
+        mPrecip = (TextView) rootView.findViewById(R.id.detail_precip_textview);
+        mAccPrecip = (TextView) rootView.findViewById(R.id.detail_accPrecip_textview);
+        mAccPrecipPriorYear = (TextView) rootView.findViewById(R.id.detail_accPrecipPriorYear_textview);
+        mAccPrecip3YearAverage = (TextView) rootView.findViewById(R.id.detail_accPrecip3YearAverage_textview);
+        mAccPrecipLongTermAverage = (TextView) rootView.findViewById(R.id.detail_accPrecipLongTermAverage_textview);
+        mSolar = (TextView) rootView.findViewById(R.id.detail_solar_textview);
+        mGdd = (TextView) rootView.findViewById(R.id.detail_gdd_textview);
+        mAccGdd = (TextView) rootView.findViewById(R.id.detail_accGdd_textview);
+        mAccGddPriorYear = (TextView) rootView.findViewById(R.id.detail_accGddPriorYear_textview);
+        mAccGdd3YearAverage = (TextView) rootView.findViewById(R.id.detail_accGdd3YearAverage_textview);
+        mAccGddLongTermAverage = (TextView) rootView.findViewById(R.id.detail_accGddLongTermAverage_textview);
+        mPet = (TextView) rootView.findViewById(R.id.detail_pet_textview);
+        mAccPet = (TextView) rootView.findViewById(R.id.detail_accPet_textview);
+        mPpet = (TextView) rootView.findViewById(R.id.detail_ppet_textview);
+
         return rootView;
     }
 
@@ -190,6 +232,21 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
 
         String description = data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_CONDITIONS_COND_TEXT));
         mDescriptionView.setText(description);
+
+        mPrecip.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_PRECIP)));
+        mAccPrecip.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PRECIP)));
+        mAccPrecipPriorYear.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PRECIP_PRIOR_YEAR)));
+        mAccPrecip3YearAverage.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PRECIP_3_YEAR_AVERAGE)));
+        mAccPrecipLongTermAverage.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PRECIP_LONG_TERM_AVERAGE)));
+        mSolar.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_SOLAR)));
+        mGdd.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_GDD)));
+        mAccGdd.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD)));
+        mAccGddPriorYear.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD_PRIOR_YEAR)));
+        mAccGdd3YearAverage.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD_3_YEAR_AVERAGE)));
+        mAccGddLongTermAverage.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD_LONG_TERM_AVERAGE)));
+        mPet.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_PET)));
+        mAccPet.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PET)));
+        mPpet.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_PPET)));
 
         // We still need this for the share intent
         resultString = String.format("%s\n %s - %s/%s", dateString, description, Utility.formatTemp(maxTemperature), Utility.formatTemp(minTemperature));

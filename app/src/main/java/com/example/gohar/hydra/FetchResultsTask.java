@@ -471,6 +471,8 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
     private boolean getDataFromAPI(String latitude, String longitude, String startDate, String token) {
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
+
+        String plantDate = Utility.getPlantDate(mContext);
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
 
@@ -484,10 +486,12 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
             final String FORECAST_BASE_URL =
                     "https://api.awhere.com/v1/weather";
 
+            // TODO fix here
             Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(Constants.LATITUDE, latitude)
                     .appendQueryParameter(Constants.LONGITUDE, longitude)
                     .appendQueryParameter(Constants.START_DATE, startDate)
+                    .appendQueryParameter("plantDate", plantDate)
                     .appendQueryParameter(Constants.ATTRIBUTE, Constants.MIN_TEMPERATURE)
                     .appendQueryParameter(Constants.ATTRIBUTE, Constants.MAX_TEMPERATURE)
                     .appendQueryParameter(Constants.ATTRIBUTE, Constants.PRECIP)
@@ -608,7 +612,7 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
             Log.v(LOG_TAG, "No existing token was present, new token is = " + oauthToken);
         }
 
-        // Params: latitude, longitude, startdate, token
+        // Params: latitude, longitude, startdate, plantdate, token
         boolean result = getDataFromAPI(params[0], params[1], params[2], oauthToken);
 
         if (!result) { // some error code returned from API

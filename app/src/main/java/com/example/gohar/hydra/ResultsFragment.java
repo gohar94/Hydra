@@ -87,8 +87,9 @@ public class ResultsFragment extends Fragment implements LoaderManager.LoaderCal
         // {latitude, longitude}
         String[] location = Utility.getPrefferedLocation(getActivity());
         String currentDate = Utility.getCurrentDate();
+        String plantDate = Utility.getPlantDate(getActivity());
 
-        Log.v(LOG_TAG, "Fetching data for date = " + currentDate);
+        Log.v(LOG_TAG, "Fetching data for date = " + currentDate + " plant date " + plantDate);
 
         fetchResultsTask.execute(location[0], location[1], currentDate);
         return;
