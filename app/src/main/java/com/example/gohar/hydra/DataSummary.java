@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 
 import java.util.Arrays;
 
@@ -50,6 +54,13 @@ public class DataSummary extends Activity {
         }
         staticLabelsFormatter.setHorizontalLabels(stringArrayFormated);
         graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                Toast.makeText(DataSummary.this, "Clicked on: " + dataPoint, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         graph.addSeries(series);
     }

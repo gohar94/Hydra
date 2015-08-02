@@ -66,6 +66,7 @@
 
     <!-- For User Input Activity -->
     <string name="user_input_planting_date">Planting Date</string>
+    <string name="user_input_choose_planting_date">Choose Planting Date</string>
     <string name="user_input_soil_moisture">Soil Moisture</string>
     <string name="user_input_button_submit">Submit</string>
     <string name="user_inputs">Please enter the details</string>

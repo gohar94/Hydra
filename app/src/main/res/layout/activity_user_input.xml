@@ -16,51 +16,51 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#A4C639" />
 
-    <TextView
-        android:id="@+id/user_input_planting_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/user_input_heading"
-        android:layout_marginTop="23dp"
-        android:text="@string/user_input_planting_date"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#0099FF" />
+    <!--<TextView-->
+        <!--android:id="@+id/user_input_planting_date"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_below="@+id/user_input_heading"-->
+        <!--android:layout_marginTop="23dp"-->
+        <!--android:text="@string/user_input_planting_date"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+        <!--android:textColor="#0099FF" />-->
 
-    <TextView
-        android:id="@+id/user_input_planting_date_notice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/user_input_planting_date"
-        android:layout_marginTop="23dp"
-        android:text="FORMAT = YYYY-MM-DD"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#0099FF" />
+    <!--<TextView-->
+        <!--android:id="@+id/user_input_planting_date_notice"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_below="@+id/user_input_planting_date"-->
+        <!--android:layout_marginTop="23dp"-->
+        <!--android:text="FORMAT = YYYY-MM-DD"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+        <!--android:textColor="#0099FF" />-->
 
     <TextView
         android:id="@+id/user_input_soil_moisture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/user_input_planting_date_notice"
+        android:layout_below="@+id/user_input_heading"
         android:layout_marginTop="23dp"
         android:text="@string/user_input_soil_moisture"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#0099FF" />
 
-    <EditText
-        android:id="@+id/edit_user_input_planting_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/user_input_planting_date"
-        android:layout_toRightOf="@+id/user_input_planting_date"
-        android:background="#CCCCCC"
-        android:ems="10"
-        android:inputType="date" >
+    <!--<EditText-->
+        <!--android:id="@+id/edit_user_input_planting_date"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBottom="@+id/user_input_planting_date"-->
+        <!--android:layout_toRightOf="@+id/user_input_planting_date"-->
+        <!--android:background="#CCCCCC"-->
+        <!--android:ems="10"-->
+        <!--android:inputType="date" >-->
 
-        <requestFocus />
-    </EditText>
+        <!--<requestFocus />-->
+    <!--</EditText>-->
 
     <EditText
         android:id="@+id/edit_user_input_soil_moisture"
@@ -76,11 +76,19 @@
     </EditText>
 
     <Button
+        android:id="@+id/button_date_picker_planting_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_input_soil_moisture"
+        android:text="@string/user_input_choose_planting_date"
+        android:onClick="showDatePickerDialog" />
+
+    <Button
         android:id="@+id/button_submit_user_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/user_input_soil_moisture"
+        android:layout_below="@+id/button_date_picker_planting_date"
         android:layout_marginTop="20dp"
         android:background="#0099FF"
         android:text="@string/user_input_button_submit"

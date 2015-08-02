@@ -115,7 +115,9 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
         etcList.clear();
 
         String[] resultStrs = new String[resultsArray.length()];
-        for (int i = 0; i < resultsArray.length(); i++) {
+        Log.e(LOG_TAG, "length isssszzzz " + resultsArray.length());
+        // 14 because 7 days, and alternate entry is of conditions
+        for (int i = 0; i < Math.min(resultsArray.length(), 14); i++) {
             String date = "";
             Double maxTemperature = Double.NaN;
             Double minTemperature = Double.NaN;;
