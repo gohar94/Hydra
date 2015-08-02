@@ -27,6 +27,28 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#0099FF" />
 
+    <TextView
+        android:id="@+id/user_input_planting_date_notice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/user_input_planting_date"
+        android:layout_marginTop="23dp"
+        android:text="FORMAT = YYYY-MM-DD"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#0099FF" />
+
+    <TextView
+        android:id="@+id/user_input_soil_moisture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/user_input_planting_date_notice"
+        android:layout_marginTop="23dp"
+        android:text="@string/user_input_soil_moisture"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#0099FF" />
+
     <EditText
         android:id="@+id/edit_user_input_planting_date"
         android:layout_width="wrap_content"
@@ -35,7 +57,20 @@
         android:layout_toRightOf="@+id/user_input_planting_date"
         android:background="#CCCCCC"
         android:ems="10"
-        android:inputType="textPersonName" >
+        android:inputType="date" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/edit_user_input_soil_moisture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/user_input_soil_moisture"
+        android:layout_toRightOf="@+id/user_input_soil_moisture"
+        android:background="#CCCCCC"
+        android:ems="10"
+        android:inputType="number" >
 
         <requestFocus />
     </EditText>
@@ -45,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/user_input_planting_date"
+        android:layout_below="@+id/user_input_soil_moisture"
         android:layout_marginTop="20dp"
         android:background="#0099FF"
         android:text="@string/user_input_button_submit"

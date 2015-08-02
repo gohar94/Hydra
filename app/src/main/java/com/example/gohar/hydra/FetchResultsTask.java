@@ -27,6 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -45,6 +46,9 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
     // contains the detail corresponding to each element in resultsAdapter
 //    private ArrayList<String> resultsDetails;
     private static String oauthToken = null;
+
+    public static ArrayList<String> dates = new ArrayList<String>();
+    public static ArrayList<Double> etcList = new ArrayList<Double>();
 
     public FetchResultsTask(Context context) {
         mContext = context;
@@ -106,6 +110,9 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
 
         // Get and insert the new results into the database
         Vector<ContentValues> cVVector = new Vector<ContentValues>(resultsArray.length());
+
+        dates.clear();
+        etcList.clear();
 
         String[] resultStrs = new String[resultsArray.length()];
         for (int i = 0; i < resultsArray.length(); i++) {
@@ -245,6 +252,21 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
                 if (result.has(Constants.DATE) && result.getString(Constants.DATE) != "null") {
                     date = result.getString(Constants.DATE);
                     resultValues.put(Constants.DATE, date);
+                }
+
+                Double kc = new Double(0);
+
+                if (gdd != null && pet != null) {
+                    if (gdd >= 0 && gdd <= 1593) {
+                        kc = (0.0005336 * gdd) + 0.3;
+                    } else if (gdd > 1593 && gdd <= 1825) {
+                        kc = 1.15;
+                    } else {
+                        kc = 2.95 - (0.00098425 * gdd);
+                    }
+                    Double etc = pet*kc;
+                    dates.add(date);
+                    etcList.add(etc);
                 }
 
                 boolean parseConditions = false;
@@ -601,7 +623,6 @@ public class FetchResultsTask extends AsyncTask<String, Void, Void> {
         } else {
             Log.v(LOG_TAG, "Using same token = " + oauthToken);
         }
-
         return null;
     }
 

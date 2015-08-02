@@ -18,6 +18,7 @@ public class UserInputActivity extends Activity {
 
     Button mButton;
     EditText mEdit;
+    EditText mEditSoilMoisture;
     TextView mText;
     String latitude;
     String longitude;
@@ -33,12 +34,17 @@ public class UserInputActivity extends Activity {
         mButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 mEdit = (EditText) findViewById(R.id.edit_user_input_planting_date);
+                mEditSoilMoisture = (EditText) findViewById(R.id.edit_user_input_soil_moisture);
                 String plantDate = mEdit.getText().toString();
+                String soilMoisture = mEditSoilMoisture.getText().toString();
+
                 SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(UserInputActivity.this);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString(getString(R.string.pref_plant_date), plantDate);
+                editor.putString(getString(R.string.pref_soil_moisture), soilMoisture);
+
                 editor.apply();
-                Log.v(LOG_TAG, "done " + plantDate);
+                Log.v(LOG_TAG, "done " + plantDate + " and " + soilMoisture);
                 Intent i = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(i);
             }

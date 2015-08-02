@@ -51,6 +51,12 @@ public class MainActivity extends ActionBarActivity {
         } else if (id == R.id.action_map) {
             openPreferredLocationInMap();
             return true;
+        } else if (id == R.id.data_summary) {
+            if (FetchResultsTask.etcList.size() < 7) {
+                Toast.makeText(this, "Loading, please try again", Toast.LENGTH_SHORT).show();
+            } else {
+                startActivity(new Intent(this, DataSummary.class));
+            }
         }
 
         return super.onOptionsItemSelected(item);

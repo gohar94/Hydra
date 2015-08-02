@@ -46,7 +46,9 @@ public class ResultsFragment extends Fragment implements LoaderManager.LoaderCal
             ResultContract.ResultEntry.COLUMN_MIN_TEMP,
             ResultContract.ResultEntry.COLUMN_CONDITIONS_COND_CODE,
             ResultContract.LocationEntry.COLUMN_LATITUDE,
-            ResultContract.LocationEntry.COLUMN_LONGITUDE
+            ResultContract.LocationEntry.COLUMN_LONGITUDE,
+            ResultContract.ResultEntry.COLUMN_ACC_GDD,
+            ResultContract.ResultEntry.COLUMN_PET
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
@@ -58,6 +60,8 @@ public class ResultsFragment extends Fragment implements LoaderManager.LoaderCal
     public static final int COL_RESULT_CONDITIONS_COND_CODE = 4;
     public static final int COL_LATITUDE = 5;
     public static final int COL_LONGITUDE = 6;
+    public static final int COL_ACC_GDD = 7;
+    public static final int COL_PET = 8;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

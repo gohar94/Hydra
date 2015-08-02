@@ -57,8 +57,6 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
             ResultContract.ResultEntry.COLUMN_PET,
             ResultContract.ResultEntry.COLUMN_ACC_PET,
             ResultContract.ResultEntry.COLUMN_PPET,
-            ResultContract.ResultEntry.COLUMN_KC,
-            ResultContract.ResultEntry.COLUMN_ETC,
             ResultContract.ResultEntry.COLUMN_CONDITIONS_COND_CODE,
             ResultContract.ResultEntry.COLUMN_CONDITIONS_COND_TEXT,
             ResultContract.LocationEntry.COLUMN_LATITUDE,
