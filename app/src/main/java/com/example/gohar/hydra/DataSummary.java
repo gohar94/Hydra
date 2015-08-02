@@ -58,7 +58,7 @@ public class DataSummary extends Activity {
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(DataSummary.this, "Clicked on: " + dataPoint, Toast.LENGTH_SHORT).show();
+                Toast.makeText(DataSummary.this, "Day: " + dataPoint.getX() + ", Soil Moisture: " + Utility.formatMillimeter(dataPoint.getY()), Toast.LENGTH_SHORT).show();
             }
         });
 

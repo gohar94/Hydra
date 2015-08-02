@@ -42,7 +42,7 @@ public class MapsActivity extends FragmentActivity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
                 builder.setTitle(R.string.alert_map_title);
-                builder.setMessage(getString(R.string.alert_map_latitude) + ": " + point.latitude + "\n" + getString(R.string.alert_map_longitude) + ": " + point.longitude);
+                builder.setMessage(getString(R.string.alert_map_latitude) + ": " + String.format("%.2f", point.latitude) + "\n" + getString(R.string.alert_map_longitude) + ": " + String.format("%.2f", point.longitude));
 
                 // Set up the buttons
                 builder.setPositiveButton(R.string.alert_map_ok_button, new DialogInterface.OnClickListener() {

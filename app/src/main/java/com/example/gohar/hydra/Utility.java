@@ -94,7 +94,7 @@ public class Utility {
     /**
      * Prepare the attribute having wh/m2 as unit for presentation.
      */
-    private static String formatWattHours(double precip) {
+    public static String formatWattHours(double precip) {
         long rounded = Math.round(precip);
 
         String mFinal = rounded + "wh/m2";

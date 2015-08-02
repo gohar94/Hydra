@@ -240,20 +240,20 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
         String description = data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_CONDITIONS_COND_TEXT));
         mDescriptionView.setText(description);
 
-        mPrecip.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_PRECIP)));
-        mAccPrecip.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PRECIP)));
-        mAccPrecipPriorYear.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PRECIP_PRIOR_YEAR)));
-        mAccPrecip3YearAverage.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PRECIP_3_YEAR_AVERAGE)));
-        mAccPrecipLongTermAverage.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PRECIP_LONG_TERM_AVERAGE)));
-        mSolar.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_SOLAR)));
-        mGdd.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_GDD)));
-        mAccGdd.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD)));
-        mAccGddPriorYear.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD_PRIOR_YEAR)));
-        mAccGdd3YearAverage.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD_3_YEAR_AVERAGE)));
-        mAccGddLongTermAverage.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD_LONG_TERM_AVERAGE)));
-        mPet.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_PET)));
-        mAccPet.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PET)));
-        mPpet.setText(data.getString(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_PPET)));
+        mPrecip.setText(Utility.formatMillimeter(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_PRECIP))));
+        mAccPrecip.setText(Utility.formatMillimeter(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PRECIP))));
+        mAccPrecipPriorYear.setText(Utility.formatMillimeter(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PRECIP_PRIOR_YEAR))));
+        mAccPrecip3YearAverage.setText(Utility.formatMillimeter(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PRECIP_3_YEAR_AVERAGE))));
+        mAccPrecipLongTermAverage.setText(Utility.formatMillimeter(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PRECIP_LONG_TERM_AVERAGE))));
+        mSolar.setText(Utility.formatWattHours(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_SOLAR))));
+        mGdd.setText(new Long(Math.round(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_GDD)))).toString());
+        mAccGdd.setText(new Long(Math.round(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD)))).toString());
+        mAccGddPriorYear.setText(new Long(Math.round(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD_PRIOR_YEAR)))).toString());
+        mAccGdd3YearAverage.setText(new Long(Math.round(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD_3_YEAR_AVERAGE)))).toString());
+        mAccGddLongTermAverage.setText(new Long(Math.round(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_GDD_LONG_TERM_AVERAGE)))).toString());
+        mPet.setText(Utility.formatMillimeter(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_PET))));
+        mAccPet.setText(Utility.formatMillimeter(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_ACC_PET))));
+        mPpet.setText(new Long(Math.round(data.getDouble(data.getColumnIndex(ResultContract.ResultEntry.COLUMN_PPET)))).toString());
 
         // CALCULATIONS
         Double kc = new Double(0);

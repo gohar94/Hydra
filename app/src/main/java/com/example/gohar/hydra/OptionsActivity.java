@@ -48,8 +48,8 @@ public class OptionsActivity extends ActionBarActivity {
                     editor.putString("longitude", String.valueOf(longitude));
                     editor.apply();
 
-                    Toast.makeText(getApplicationContext(), getString(R.string.alert_map_latitude) + ": " + latitude + "\n" + getString(R.string.alert_map_longitude) + ": " + longitude, Toast.LENGTH_LONG).show();
-                    Intent i=new Intent(getBaseContext(), MainActivity.class);
+                    Toast.makeText(getApplicationContext(), getString(R.string.alert_map_latitude) + ": " + String.format("%.2f", latitude) + "\n" + getString(R.string.alert_map_longitude) + ": " + String.format("%.2f", longitude), Toast.LENGTH_LONG).show();
+                    Intent i=new Intent(getBaseContext(), UserInputActivity.class);
                     startActivity(i);
                 } else {
                     // can't get location
